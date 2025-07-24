@@ -439,6 +439,7 @@ button {
   }
 }
 .btn:hover {
+  transform: scaleX(1.06) scaleY(1.06);
   box-shadow: var(--redefine-box-shadow-hover);
 }
 .btn:hover,
@@ -457,7 +458,7 @@ button {
   clear: both;
 }
 .markdown-body {
-  font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif, sans-serif;
+  font-family: 'Inter, system-ui, sans-serif', 'WenQuanYi Micro Hei, Noto Sans SC', sans-serif;
   font-size: 16px;
 }
 .markdown-body blockquote {
@@ -583,7 +584,7 @@ button {
 .markdown-body .h4,
 .markdown-body .h5,
 .markdown-body .h6 {
-  font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif, sans-serif;
+  font-family: 'Inter, system-ui, sans-serif', 'WenQuanYi Micro Hei, Noto Sans SC', sans-serif;
   color: var(--second-text-color);
   line-height: 1.5;
 }
@@ -1336,7 +1337,7 @@ pre .deletion {
   border-radius: 50px;
 }
 .article-copyright-info-container {
-  font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
+  font-family: 'Inter, system-ui, sans-serif', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
   position: relative;
   width: 100%;
   box-sizing: border-box;
@@ -1735,7 +1736,7 @@ pre .deletion {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(120deg, rgba(247,135,54,0.208) 0%, rgba(54,125,247,0.208) 100%);
+  background: linear-gradient(120deg, rgba(247,135,54,0.188) 0%, rgba(54,125,247,0.188) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding-top: 2px;
@@ -1769,6 +1770,7 @@ pre .deletion {
   line-height: 1;
   color: var(--first-text-color);
   transform: translateY(1px);
+  font-family: 'Montserrat, sans-serif';
 }
 .navbar-container .navbar-content .logo-title h1 {
   margin: 0;
@@ -2316,6 +2318,7 @@ html.is-animating .transition-navbar {
 .paginator span.page-number:hover,
 .paginator a.prev:hover,
 .paginator a.next:hover {
+  transform: scaleX(1.06) scaleY(1.06);
   box-shadow: var(--redefine-box-shadow-hover);
 }
 .paginator a.page-number:hover,
@@ -2374,6 +2377,7 @@ html.is-animating .transition-navbar {
   margin-bottom: 0;
 }
 .post-tools-container .article-tools-list li:hover {
+  transform: scaleX(1.06) scaleY(1.06);
   box-shadow: var(--redefine-box-shadow-hover);
 }
 .post-tools-container .article-tools-list li.page-aside-toggle {
@@ -2592,7 +2596,7 @@ html.is-animating .scroll-progress-bar {
   width: 100%;
   font-size: 0.92rem;
   box-sizing: border-box;
-  font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif, 'Noto Sans', 'Noto Sans SC', sans-serif;
+  font-family: 'Inter, system-ui, sans-serif', 'WenQuanYi Micro Hei, Noto Sans SC', 'Noto Sans', 'Noto Sans SC', sans-serif;
 }
 .post-toc-wrap .post-toc .toc-title {
   font-size: 0.8rem;
@@ -5516,6 +5520,7 @@ html.is-animating .transition-fade-down {
   }
 }
 .home-content-container .home-article-list .home-article-item:hover {
+  transform: scaleX(1.015) scaleY(1.015);
   box-shadow: var(--redefine-box-shadow-hover);
 }
 @media (max-width: 768px) {
@@ -5544,7 +5549,7 @@ html.is-animating .transition-fade-down {
   font-size: 1.4rem;
   line-height: 1.5;
   color: var(--second-text-color);
-  font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif, 'Noto Sans SC', sans-serif;
+  font-family: 'Inter, system-ui, sans-serif', 'WenQuanYi Micro Hei, Noto Sans SC', 'Noto Sans SC', sans-serif;
   margin: 0;
 }
 @media (max-width: 768px) {
@@ -6123,6 +6128,7 @@ html.is-animating .transition-fade-down {
   color: var(--second-text-color);
   font-family: 'Chillax-Variable', sans-serif;
   text-align: center;
+  font-family: 'Montserrat, sans-serif';
 }
 .home-sidebar-container .sidebar-links .site-info .announcement {
   font-size: 0.9rem;
