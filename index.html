@@ -733,7 +733,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -741,7 +741,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -767,12 +767,12 @@
                 <div class="author flex flex-col justify-center my-2.5 mx-0">
     <div class="name">xhxbb</div>
     
-        <div class="label">Lv1</div>
+        <div class="label">Lv2</div>
     
 </div>
                 <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -780,7 +780,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -833,6 +833,120 @@
 			<div class="main-content">
 				<div class="home-content-container">
     <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2026/07/23/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/">
+                            一些提权学习
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            靶机一靶机地址：https://www.vulnhub.com/entry/lampiao-1,249/
+先准备好靶机环境，接着使用nmap扫描开放端口
+1nmap -p1-65535 192.168.222.0/24
+
+
+目标靶机开放了22，80，1898端口。访问192.168.222.131:80啥也没有，接着访问1898端口。
+
+使用了cms（Drupal）
+使用msf查找能直接利用...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Jul 23 2026 18:42:55 GMT+0800">
+                
+                    2026-07-23
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/%E6%8F%90%E6%9D%83/">提权</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2026/07/23/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/">阅读全文<span class="seo-reader-text">一些提权学习</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2026/05/31/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bwp/">
+                            第十届御网杯网络安全大赛wp
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            一、Babyrsa题目截图解题思路题目中 RSA 加密指数 e = 3 非常小，且明文 m 的立方小于模数 n，因此可以直接对密文 c 开三次方根得到明文。
+解密脚本：
+123456789101112from Crypto.Util.number import long_to_bytesimport gmpy2n = 6236487011601042457985698622486631859...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sun May 31 2026 12:47:46 GMT+0800">
+                
+                    2026-05-31
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/wp/">wp</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2026/05/31/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bwp/">阅读全文<span class="seo-reader-text">第十届御网杯网络安全大赛wp</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
         
             <li class="home-article-item">
 
@@ -1253,12 +1367,12 @@ ez_锟斤拷????
               <span>2025</span>
               -
             
-            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">xhxbb</a>
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">xhxbb</a>
             
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 6 篇文章
+                        共撰写了 8 篇文章
                     </span>
                     
                 </p>
