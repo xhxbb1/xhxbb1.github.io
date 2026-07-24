@@ -140,7 +140,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2026-07-23T10:42:55.000Z">
-<meta property="article:modified_time" content="2026-07-24T09:17:03.269Z">
+<meta property="article:modified_time" content="2026-07-24T10:17:07.287Z">
 <meta property="article:author" content="xhxbb">
 <meta property="article:tag" content="提权">
 <meta name="twitter:card" content="summary">
@@ -690,8 +690,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-07-24 17:17:03</span>
-            <span class="mobile">2026-07-24 17:17:03</span>
+            <span class="desktop">2026-07-24 18:17:07</span>
+            <span class="mobile">2026-07-24 18:17:07</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -736,14 +736,14 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/1.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="1"
                 ></p>
 <p>目标靶机开放了22，80，1898端口。访问192.168.222.131:80啥也没有，接着访问1898端口。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/2.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="2"
                 ></p>
 <p>使用了cms（Drupal）</p>
@@ -751,7 +751,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/3.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="3"
                 ></p>
 <p>接着进行利用：</p>
@@ -767,7 +767,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/4.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="4"
                 ></p>
 <p>有很多可用漏洞（标注橙色可优先利用），这里使用CVE-2016-5195dirtycow，脏牛漏洞。</p>
@@ -787,28 +787,28 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/5.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="5"
                 ></p>
 <p>访问网站，有一个注册，登录功能，先注册一个账号，登录进去。<br>登录进去查看url：&#x2F;dashboard.php?id&#x3D;2，id为2，将id改为1，提示Your Not Allowed To Access another user information。id为1应该就是管理员账号了。<br>个人界面有修改密码功能，尝试抓包，修改密码</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/6.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="6"
                 ></p>
 <p>将这里的id为2改成1，相当于修改了管理员的密码为123456</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/7.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="7"
                 ></p>
 <p>成功登录管理员账号，这里有个文件上传功能，尝试从这突破。尝试上传php文件提示：Sorry , Allow Ex : jpg,png,gif<br>后缀名改为phtml绕过</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/8.png"
+                     data-src="/2025/08/05/ctfshow-MISC%E5%85%A5%E9%97%A8/"
                       alt="8"
                 ><br>访问&#x2F;upload&#x2F;shell.phtml，页面回显空白，说明解析成功，使用哥斯拉连接。<br>连接后是低权限用户。</p>
 <p>由于直接使用哥斯拉会出现一些乱码，不显示问题，反弹到msf上使用。</p>
@@ -888,7 +888,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-07-24 17:17:03
+                    :</strong> 2026-07-24 18:17:07
             </li>
         
         <li>
