@@ -140,7 +140,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2026-08-06T12:09:21.000Z">
-<meta property="article:modified_time" content="2026-08-06T12:10:38.862Z">
+<meta property="article:modified_time" content="2026-08-07T15:06:53.466Z">
 <meta property="article:author" content="xhxbb">
 <meta property="article:tag" content="免杀">
 <meta property="article:tag" content="哥斯拉">
@@ -692,8 +692,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-08-06 20:10:38</span>
-            <span class="mobile">2026-08-06 20:10:38</span>
+            <span class="desktop">2026-08-07 23:06:53</span>
+            <span class="mobile">2026-08-07 23:06:53</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -742,6 +742,167 @@
 			<blockquote>
 <p>继续继续</p>
 </blockquote>
+<p>目前主流的webshell管理工具是冰蝎和哥斯拉，二者各有优点，冰蝎有着更好的传输协议内容，而哥斯拉插件，拓展更为丰富。</p>
+<h1 id="哥斯拉WebShell流量特征"><a href="#哥斯拉WebShell流量特征" class="headerlink" title="哥斯拉WebShell流量特征"></a>哥斯拉WebShell流量特征</h1><p>哥斯拉（Godzilla）作为目前较为流行的 WebShell 管理工具，其默认版本的通信协议和代码特征已经被大量安全研究人员分析。因此，在实际攻防环境中，通常会通过修改通信协议、加密方式、请求参数等方式进行魔改，以降低被流量检测设备识别的概率。</p>
+<h2 id="一、强特征分析"><a href="#一、强特征分析" class="headerlink" title="一、强特征分析"></a>一、强特征分析</h2><h3 id="1-Cookie-特征"><a href="#1-Cookie-特征" class="headerlink" title="1. Cookie 特征"></a>1. Cookie 特征</h3><p>哥斯拉默认通信过程中，请求包 Cookie 字段末尾通常存在一个 <strong>分号（;）</strong>。</p>
+<p>例如：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: xxx=xxx;</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h3 id="2-请求体-Base64-编码特征"><a href="#2-请求体-Base64-编码特征" class="headerlink" title="2. 请求体 Base64 编码特征"></a>2. 请求体 Base64 编码特征</h3><p>哥斯拉默认通信数据通常经过 Base64 编码处理。</p>
+<p>初始请求包请求体通常具有固定格式：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pass=eval...&amp;key=...</span><br></pre></td></tr></table></figure></div>
+
+<p>首次连接时，由于需要传输初始化 Payload，因此数据包体积通常较大。</p>
+<p>后续执行命令、文件操作等请求的数据量相对较小。</p>
+<p>流量特征表现：</p>
+<ul>
+<li>第一次请求：<ul>
+<li>POST 数据较大</li>
+<li>包含初始化代码</li>
+</ul>
+</li>
+<li>后续请求：<ul>
+<li>POST 数据较小</li>
+<li>内容经过编码加密</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-响应包-MD5-拼接特征"><a href="#3-响应包-MD5-拼接特征" class="headerlink" title="3. 响应包 MD5 拼接特征"></a>3. 响应包 MD5 拼接特征</h3><p>如果哥斯拉采用 Base64 编码通信，则服务器返回的数据同样会经过 Base64 编码。</p>
+<p>响应包结构：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MD5前16位 + Base64数据 + MD5后16位</span><br></pre></td></tr></table></figure></div>
+
+<p>例如：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">72a9c691ccdaab98</span><br><span class="line">L1tMGI4YTljO/79NDQm7r9PZzBiOA==</span><br><span class="line">b4c4e1f6ddd2a488</span><br></pre></td></tr></table></figure></div>
+
+<p>其中：</p>
+<ul>
+<li>前 16 位：<ul>
+<li>MD5 哈希前半部分</li>
+</ul>
+</li>
+<li>中间：<ul>
+<li>Base64 编码后的真实数据</li>
+</ul>
+</li>
+<li>后 16 位：<ul>
+<li>MD5 哈希后半部分</li>
+</ul>
+</li>
+</ul>
+<p>解码后可以得到实际返回内容。</p>
+<hr>
+<h3 id="4-初始化连接请求特征"><a href="#4-初始化连接请求特征" class="headerlink" title="4. 初始化连接请求特征"></a>4. 初始化连接请求特征</h3><p>哥斯拉建立连接时，会发送固定的三个 POST 请求。</p>
+<h4 id="请求-1：Payload-初始化"><a href="#请求-1：Payload-初始化" class="headerlink" title="请求 1：Payload 初始化"></a>请求 1：Payload 初始化</h4><p>客户端发送固定 Payload：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload</span><br></pre></td></tr></table></figure></div>
+
+<p>服务器通常返回空内容。</p>
+<hr>
+<h4 id="请求-2：连接测试"><a href="#请求-2：连接测试" class="headerlink" title="请求 2：连接测试"></a>请求 2：连接测试</h4><p>发送：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test</span><br></pre></td></tr></table></figure></div>
+
+<p>服务器返回固定格式数据。</p>
+<p>例如：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">72a9c691ccdaab98L1tMGI4YTljO/79NDQm7r9PZzBiOA==b4c4e1f6ddd2a488</span><br></pre></td></tr></table></figure></div>
+
+<p>经过解码后返回：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ok</span><br></pre></td></tr></table></figure></div>
+
+<p>如果连接失败：</p>
+<ul>
+<li>返回为空</li>
+<li>不继续发送第三个请求</li>
+</ul>
+<hr>
+<h4 id="请求-3：获取服务器信息"><a href="#请求-3：获取服务器信息" class="headerlink" title="请求 3：获取服务器信息"></a>请求 3：获取服务器信息</h4><p>当用户点击连接成功后：</p>
+<p>发送：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getBasicInfo</span><br></pre></td></tr></table></figure></div>
+
+<p>服务器返回：</p>
+<ul>
+<li>操作系统信息</li>
+<li>Web 环境信息</li>
+<li>Java&#x2F;PHP 版本等</li>
+</ul>
+<hr>
+<h1 id="二、弱特征分析"><a href="#二、弱特征分析" class="headerlink" title="二、弱特征分析"></a>二、弱特征分析</h1><h3 id="1-User-Agent-特征"><a href="#1-User-Agent-特征" class="headerlink" title="1. User-Agent 特征"></a>1. User-Agent 特征</h3><p>哥斯拉默认使用 Java 环境发送请求，因此 UA 可能包含：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Java/1.8.0_121</span><br></pre></td></tr></table></figure></div>
+
+<p>类似字符串。</p>
+<p>例如：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: Java/1.8.0_121</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h3 id="2-Accept-字段特征"><a href="#2-Accept-字段特征" class="headerlink" title="2. Accept 字段特征"></a>2. Accept 字段特征</h3><p>默认 Accept：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2</span><br></pre></td></tr></table></figure></div>
+
+<p>与普通浏览器请求存在明显差异。</p>
+<hr>
+<h3 id="3-Cache-Control-特征"><a href="#3-Cache-Control-特征" class="headerlink" title="3. Cache-Control 特征"></a>3. Cache-Control 特征</h3><p>响应包中：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control:</span><br><span class="line">no-store, no-cache, must-revalidate</span><br></pre></td></tr></table></figure></div>
+
+<p>通常保持固定。</p>
+<hr>
+<h1 id="三、其他协议特征"><a href="#三、其他协议特征" class="headerlink" title="三、其他协议特征"></a>三、其他协议特征</h1><h2 id="1-ICMP-通信特征"><a href="#1-ICMP-通信特征" class="headerlink" title="1. ICMP 通信特征"></a>1. ICMP 通信特征</h2><p>部分哥斯拉版本支持 ICMP 通信。</p>
+<p>由于 ICMP 流量通常较少，因此在大规模网络流量中检测难度较高。</p>
+<p>其特征：</p>
+<ul>
+<li>使用 ICMP 数据报文</li>
+<li>Payload 长度固定：</li>
+</ul>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">92 Bytes</span><br></pre></td></tr></table></figure></div>
+
+<p>该固定长度可以作为检测依据。</p>
+<hr>
+<h1 id="四、不同脚本类型特征"><a href="#四、不同脚本类型特征" class="headerlink" title="四、不同脚本类型特征"></a>四、不同脚本类型特征</h1><h3 id="1-JSP-类型"><a href="#1-JSP-类型" class="headerlink" title="1. JSP 类型"></a>1. JSP 类型</h3><p>默认 JSP WebShell 中可能出现：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xc</span><br><span class="line">pass</span><br><span class="line">ClassLoader</span><br><span class="line">getClass().getClassLoader()</span><br></pre></td></tr></table></figure></div>
+
+<p>以及：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Base64编码</span><br><span class="line">Base64解码</span><br><span class="line">Java反射</span><br></pre></td></tr></table></figure></div>
+
+<p>等 Java 相关关键字。</p>
+<hr>
+<h3 id="2-PHP-ASP-类型"><a href="#2-PHP-ASP-类型" class="headerlink" title="2. PHP &#x2F; ASP 类型"></a>2. PHP &#x2F; ASP 类型</h3><p>PHP 和 ASP 类型通常更加接近普通一句话木马。</p>
+<p>Payload 中可能出现：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">godzilla</span><br></pre></td></tr></table></figure></div>
+
+<p>作为识别关键字。</p>
+<h1 id="魔改"><a href="#魔改" class="headerlink" title="魔改"></a>魔改</h1><p>先从一些版权文字内容改起：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6092260458.png"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6093032483.png"
+                     
+                ></p>
+<p>需要修改校验</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6093200685.png"
+                     
+                ></p>
+<p>找到了，但我这里是Unicode编码</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6093976466.png"
+                     
+                ></p>
+<p>将这里逻辑判断代码注释掉。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6094100176.png"
+                     
+                ></p>
+<p>成功运行，然后可以看到改动的地方也都变化了。</p>
 
 		</div>
 
@@ -756,7 +917,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-08-06 20:10:38
+                    :</strong> 2026-08-07 23:06:53
             </li>
         
         <li>
@@ -881,7 +1042,7 @@
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
 		<div class="page-title">免杀学习webshell篇(2)</div>
-		
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%A5%E6%96%AF%E6%8B%89WebShell%E6%B5%81%E9%87%8F%E7%89%B9%E5%BE%81"><span class="nav-text">哥斯拉WebShell流量特征</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BC%BA%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90"><span class="nav-text">一、强特征分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Cookie-%E7%89%B9%E5%BE%81"><span class="nav-text">1. Cookie 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AF%B7%E6%B1%82%E4%BD%93-Base64-%E7%BC%96%E7%A0%81%E7%89%B9%E5%BE%81"><span class="nav-text">2. 请求体 Base64 编码特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%93%8D%E5%BA%94%E5%8C%85-MD5-%E6%8B%BC%E6%8E%A5%E7%89%B9%E5%BE%81"><span class="nav-text">3. 响应包 MD5 拼接特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%9E%E6%8E%A5%E8%AF%B7%E6%B1%82%E7%89%B9%E5%BE%81"><span class="nav-text">4. 初始化连接请求特征</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BC%B1%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90"><span class="nav-text">二、弱特征分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-User-Agent-%E7%89%B9%E5%BE%81"><span class="nav-text">1. User-Agent 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Accept-%E5%AD%97%E6%AE%B5%E7%89%B9%E5%BE%81"><span class="nav-text">2. Accept 字段特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Cache-Control-%E7%89%B9%E5%BE%81"><span class="nav-text">3. Cache-Control 特征</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%85%B6%E4%BB%96%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81"><span class="nav-text">三、其他协议特征</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ICMP-%E9%80%9A%E4%BF%A1%E7%89%B9%E5%BE%81"><span class="nav-text">1. ICMP 通信特征</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8D%E5%90%8C%E8%84%9A%E6%9C%AC%E7%B1%BB%E5%9E%8B%E7%89%B9%E5%BE%81"><span class="nav-text">四、不同脚本类型特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-JSP-%E7%B1%BB%E5%9E%8B"><span class="nav-text">1. JSP 类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-PHP-ASP-%E7%B1%BB%E5%9E%8B"><span class="nav-text">2. PHP &#x2F; ASP 类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AD%94%E6%94%B9"><span class="nav-text">魔改</span></a></li></ol>
 
 	</div>
 </div>
