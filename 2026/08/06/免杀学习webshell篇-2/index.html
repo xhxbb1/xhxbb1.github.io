@@ -140,7 +140,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2026-08-06T12:09:21.000Z">
-<meta property="article:modified_time" content="2026-08-07T15:06:53.466Z">
+<meta property="article:modified_time" content="2026-08-08T08:58:27.052Z">
 <meta property="article:author" content="xhxbb">
 <meta property="article:tag" content="免杀">
 <meta property="article:tag" content="哥斯拉">
@@ -641,7 +641,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">16</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -678,7 +678,7 @@
 				<div class="author flex items-center">
 					<span class="name text-default-text-color text-lg font-semibold">xhxbb</span>
 					
-					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
 					
 				</div>
 				<div class="meta-info">
@@ -692,8 +692,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-08-07 23:06:53</span>
-            <span class="mobile">2026-08-07 23:06:53</span>
+            <span class="desktop">2026-08-08 16:58:27</span>
+            <span class="mobile">2026-08-08 16:58:27</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -903,6 +903,32 @@
                      
                 ></p>
 <p>成功运行，然后可以看到改动的地方也都变化了。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6115778389.png"
+                     
+                ></p>
+<p>修改一下UA头，抓包看看。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6170757401.png"
+                     
+                ></p>
+<p>可以看到ua头成功被修改了。</p>
+<p>哥斯拉有自动生成shell的功能，，直接传是肯定被杀掉的，这块也可以魔改。</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="type">byte</span>[] generate(String password, String secretKey) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(functions.readInputStreamAutoClose(PhpEvalXor.class.getResourceAsStream(<span class="string">&quot;template/eval.bin&quot;</span>))).replace(<span class="string">&quot;&#123;pass&#125;&quot;</span>, password).getBytes();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>eval.bin:</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2025/12/03/NewStar-CTF-2025%E5%A4%8D%E7%8E%B0/6173134188.png"
+                     
+                ></p>
+<p>当然我们可以魔改写一个功能，用于随机生成免杀shell（当然比较困难），最简单的就是直接替换eval.bin文件</p>
+<p>当然还有修改加密器，自己添加插件等等，不演示了。</p>
 
 		</div>
 
@@ -917,7 +943,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-08-07 23:06:53
+                    :</strong> 2026-08-08 16:58:27
             </li>
         
         <li>
@@ -961,6 +987,18 @@
 
 		
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/08/08/%E5%85%8D%E6%9D%80%E5%AD%A6%E4%B9%A0C2%E8%BF%9C%E6%8E%A7%E7%AF%87-1/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">免杀学习C2远控篇(1)</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
 			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
@@ -1069,7 +1107,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 15 篇文章
+                        共撰写了 16 篇文章
                     </span>
                     
                 </p>
