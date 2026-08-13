@@ -140,7 +140,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xhxbb1.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2026-08-08T09:04:36.000Z">
-<meta property="article:modified_time" content="2026-08-08T09:25:00.615Z">
+<meta property="article:modified_time" content="2026-08-10T12:22:58.925Z">
 <meta property="article:author" content="xhxbb">
 <meta property="article:tag" content="免杀">
 <meta name="twitter:card" content="summary">
@@ -690,8 +690,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-08-08 17:25</span>
-            <span class="mobile">2026-08-08 17:25</span>
+            <span class="desktop">2026-08-10 20:22:58</span>
+            <span class="mobile">2026-08-10 20:22:58</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -729,7 +729,87 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			
+			<h1 id="常见杀软特点总结"><a href="#常见杀软特点总结" class="headerlink" title="常见杀软特点总结"></a>常见杀软特点总结</h1><p>杀软一般通过以下几点来检测恶意软件和行为：</p>
+<ol>
+<li><p>静态查杀：最基本的查杀方式，主要通过对文件的特征码进行扫描，匹配已知的病毒特征库。如果发现文件特征码与病毒特征库中的某个病毒特征码相匹配，就判断该文件为病毒；部分杀软会在静态查杀时将程序放入沙箱中运行几秒的方式以检测程序是否是恶意程序。</p>
+</li>
+<li><p>动态（主动）查杀：通过在程序运行时扫描程序内存是否匹配病毒特征的方式主动发现恶意程序。在EDR中还会挂钩敏感的Windows API，在程序调用到被挂钩的API时检查函数参数和调用栈以检测恶意程序。</p>
+</li>
+<li><p>流量监控：监控网络流量，分析网络数据包，如果发现异常流量或者已知的恶意流量特征，就可能是恶意软件在进行网络活动。</p>
+</li>
+<li><p>行为监控：监控程序的运行行为，如文件操作、注册表操作等。如果发现某个程序的行为超出了正常范围，就可能是恶意软件。</p>
+</li>
+</ol>
+<h1 id="常见杀软特点"><a href="#常见杀软特点" class="headerlink" title="常见杀软特点"></a>常见杀软特点</h1><ul>
+<li><p>火绒：静态查杀能力弱，没有动态查杀，横向移动防护比较强，frp等内网穿透受影响。</p>
+</li>
+<li><p>360安全卫士&#x2F;360杀毒：静态查杀能力较强，没有动态查杀，如果开启了核晶模式，则行为查杀比较强，注入进程等敏感行为会被拦截；核晶模式在物理机中默认开启，在虚拟机中默认关闭。</p>
+</li>
+<li><p>360QVM：360QVM 简单的说就是使用了机器学习辅助查杀，在360杀毒引擎设置中开启 360QVM 后静态查杀会变得非常流氓，有一点特征就会被查杀。</p>
+</li>
+<li><p>Windows Defender：静态查杀能力较强，动态查杀较强，监控 HTTP 流量。</p>
+</li>
+<li><p>卡巴斯基：普通版静态查杀能力一般，企业版静态查杀能力较强，动态查杀较强。</p>
+</li>
+<li><p>ESET：静态查杀能力较强，没有动态查杀。</p>
+</li>
+</ul>
+<h2 id="按照静态查杀能力强弱排列"><a href="#按照静态查杀能力强弱排列" class="headerlink" title="按照静态查杀能力强弱排列"></a>按照静态查杀能力强弱排列</h2><p>火绒 &lt; 360安全卫士、360杀毒、Windows Defender、卡巴斯基标准版 &lt; 卡巴斯基企业版、ESET &lt; 360QVM。</p>
+<p>目前见过静态查杀能力最强的属360QVM，连国外的杀软都有所不及，可以说360QVM是非常流氓的了。</p>
+<h2 id="按照动态查杀能力强弱排列"><a href="#按照动态查杀能力强弱排列" class="headerlink" title="按照动态查杀能力强弱排列"></a>按照动态查杀能力强弱排列</h2><p>火绒、360、ESET &lt; 卡巴斯基 &lt; Windows Defender。</p>
+<p>火绒、360、ESET 这几个没有动态查杀。</p>
+<h1 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h1><h2 id="C2（Command-and-Control）"><a href="#C2（Command-and-Control）" class="headerlink" title="C2（Command and Control）"></a>C2（Command and Control）</h2><p>C2（Command and Control，命令与控制）指攻击者与被控主机之间建立的通信控制方式。</p>
+<p>在攻击者获取目标主机权限后，需要通过 C2 通道向目标发送命令，并接收执行结果，从而实现对目标主机的远程控制。</p>
+<p>简单来说，C2 就像攻击者与目标机器之间的“遥控通道”。</p>
+<p>常见 C2 框架：</p>
+<ul>
+<li>Cobalt Strike：目前红队中使用较多的商业化 C2 平台。</li>
+<li>Metasploit：集成 Meterpreter，可以建立远程控制会话。</li>
+<li>Sliver：开源 C2 框架。</li>
+<li>Mythic：模块化开源 C2 平台。</li>
+<li>Empire：基于 PowerShell 的 C2 框架。</li>
+</ul>
+<p>除此之外，冰蝎、哥斯拉、蚁剑等 WebShell 管理工具也可以看作一种 Web C2，通过 WebShell 实现对目标服务器的控制。</p>
+<p>常见 C2 通信方式包括：</p>
+<ul>
+<li>HTTP&#x2F;HTTPS</li>
+<li>TCP</li>
+<li>DNS</li>
+</ul>
+<p>C2 是红队攻击链中的重要组成部分，负责维持攻击者与目标之间的持续通信。</p>
+<h2 id="什么是-ShellCode"><a href="#什么是-ShellCode" class="headerlink" title="什么是 ShellCode"></a>什么是 ShellCode</h2><p>ShellCode 是一段用于实现攻击目的的机器指令代码，通常以二进制形式存在，攻击者会将其注入到目标进程中执行。</p>
+<p>早期 ShellCode 主要用于获取 Shell（命令行控制权限），因此得名 ShellCode。随着攻击技术的发展，ShellCode 的功能已经不局限于获取 Shell，还可以用于执行命令、加载木马、建立 C2 通信、权限提升等操作。</p>
+<p>简单来说，ShellCode 就是一段能够在目标机器上执行特定功能的代码，是漏洞利用中的重要组成部分。</p>
+<p>常见用途：</p>
+<ul>
+<li>获取远程 Shell</li>
+<li>执行任意命令</li>
+<li>下载并执行 Payload</li>
+<li>加载 C2 Agent</li>
+<li>权限提升</li>
+</ul>
+<p>在漏洞利用流程中，通常为：</p>
+<p>漏洞触发 → 执行 ShellCode → 获取控制权限 → 建立 C2 通信</p>
+<p>ShellCode 通常具有体积小、无文件落地、直接在内存中执行等特点，因此经常被用于漏洞利用和免杀技术研究中。</p>
+<h2 id="什么是机器码"><a href="#什么是机器码" class="headerlink" title="什么是机器码"></a>什么是机器码</h2><p>机器码（Machine Code）是计算机 CPU 能够直接识别和执行的二进制指令，是程序在计算机底层运行的最基本形式。 程序员编写的代码（如 C、C++、Java 等）需要经过编译或解释，最终转换为机器码，CPU 才能执行。</p>
+<h2 id="什么是-ShellCode-Loader"><a href="#什么是-ShellCode-Loader" class="headerlink" title="什么是 ShellCode Loader"></a>什么是 ShellCode Loader</h2><p>ShellCode Loader（ShellCode 加载器）是一种用于加载并执行 ShellCode 的程序。</p>
+<p>它的主要作用是将 ShellCode 加载到内存中，并通过一定方式触发执行。由于 ShellCode 通常是一段原始机器码，无法像普通程序一样直接运行，因此需要 Loader 负责解析、加载和执行。</p>
+<p>简单来说：</p>
+<p>ShellCode Loader 就是一个“启动器”，负责把 ShellCode 送入内存并让 CPU 执行。</p>
+<p>基本流程：</p>
+<p>ShellCode<br>   ↓<br>Loader读取<br>   ↓<br>申请内存空间<br>   ↓<br>写入ShellCode<br>   ↓<br>修改执行权限<br>   ↓<br>调用执行</p>
+<p>常见功能：</p>
+<ul>
+<li>读取 ShellCode</li>
+<li>内存分配</li>
+<li>加载 ShellCode</li>
+<li>执行 ShellCode</li>
+<li>对 ShellCode 进行加密或解密</li>
+</ul>
+<p>在安全研究中，ShellCode Loader 常用于漏洞利用、红队工具开发和恶意样本分析中。</p>
+<p>例如：</p>
+<p>攻击者可能将 ShellCode 进行加密保存，然后通过 Loader 在运行时解密并加载到内存执行，以减少静态检测特征。</p>
+
 		</div>
 
 		
@@ -743,7 +823,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-08-08 17:25:00
+                    :</strong> 2026-08-10 20:22:58
             </li>
         
         <li>
@@ -872,7 +952,7 @@
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
 		<div class="page-title">免杀学习C2远控篇(1)</div>
-		
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%9D%80%E8%BD%AF%E7%89%B9%E7%82%B9%E6%80%BB%E7%BB%93"><span class="nav-text">常见杀软特点总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%9D%80%E8%BD%AF%E7%89%B9%E7%82%B9"><span class="nav-text">常见杀软特点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E9%9D%99%E6%80%81%E6%9F%A5%E6%9D%80%E8%83%BD%E5%8A%9B%E5%BC%BA%E5%BC%B1%E6%8E%92%E5%88%97"><span class="nav-text">按照静态查杀能力强弱排列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E5%8A%A8%E6%80%81%E6%9F%A5%E6%9D%80%E8%83%BD%E5%8A%9B%E5%BC%BA%E5%BC%B1%E6%8E%92%E5%88%97"><span class="nav-text">按照动态查杀能力强弱排列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5"><span class="nav-text">一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C2%EF%BC%88Command-and-Control%EF%BC%89"><span class="nav-text">C2（Command and Control）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-ShellCode"><span class="nav-text">什么是 ShellCode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%BA%E5%99%A8%E7%A0%81"><span class="nav-text">什么是机器码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-ShellCode-Loader"><span class="nav-text">什么是 ShellCode Loader</span></a></li></ol></li></ol>
 
 	</div>
 </div>
